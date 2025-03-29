@@ -1,0 +1,67 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Seller Dashboard {% endblock %}
+{% block content %}
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Seller Panel</h2>
+                <i class="fas fa-times close-icon" onclick="toggleSidebar()"></i>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-item">
+                    <i class="fas fa-box icon"></i> <span>Products</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-map-marker-alt icon"></i> <span>Location</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-user icon"></i> <span>Profile</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <div class="top-bar">
+                <i class="fas fa-bars menu-icon" onclick="toggleSidebar()"></i>
+                <h2>Dashboard</h2>
+            </div>
+
+            <h1 class="title">Seller Dashboard</h1>
+
+            <div class="cards-container">
+                <div class="card">
+                    <h2>Manage Products</h2>
+                    <p>Add, update, or remove products from your store.</p>
+                    <button class="btn"><a href="{% url 'main:update-product' %}">Go to Products</a></button>
+                </div>
+                <div class="card">
+                    <h2>Update Location</h2>
+                    <p>Set your selling location for better visibility.</p>
+                    <button class="btn"><a href="{% url 'main:location-update' %}">Update Location</a></button>
+                </div>
+                <div class="card">
+                    <h2>Edit Profile</h2>
+                    <p>Update your profile details and social links.</p>
+                    <button class="btn"><a href="{% url 'main:edit-profile' %}">Edit Profile</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("main-content");
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-250px";
+                mainContent.style.marginLeft = "0";
+            } else {
+                sidebar.style.left = "0px";
+                mainContent.style.marginLeft = "250px";
+            }
+        }
+    </script>
+{% endblock %}

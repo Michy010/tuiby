@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/styles.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <title>{% block title %}Documents{% endblock %}</title>
+</head>
+<body>
+    <div class="menu-bar">
+        <div class="logo">
+            <img src="{% static 'main/images/tuiby-logo.png' %}" alt="logo image">
+            <p class="tuiby-paragraph">tuiby</p>
+        </div>
+        <div class="menu-items">
+            <ul>
+                <li><a href="{% url 'main:home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+                <li><a href="{% url 'main:buyer' %}" class="{% if request.path == '/buyer/' %}active{% endif %}">For buyer</a></li>
+                <li><a href="{% url 'main:seller' %}" class="{% if request.path == '/seller/' %}active{% endif %}">For seller</a></li>
+                <li><a href="{%url 'main:faqs' %}" class="{% if request.path == 'faqs' %}active{% endif %}">FAQs</a></li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <div class="copyright">
+            <p>&copy;2025Tuiby.All rights reserved</p>
+        </div>
+        <div class="quick-links">
+            <p><a href="">Terms</a> | <a href="">Privacy</a> | <a href="">Contact</a></p>
+        </div>
+    </footer>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

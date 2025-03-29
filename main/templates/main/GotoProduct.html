@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Products - Seller Dashboard {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="products-header">
+        <h1>Products</h1>
+        <button class="add-product-btn">Add Product</button>
+    </div>
+    <div class="product-list">
+        <div class="product-card">
+            <i class="fas fa-laptop"></i>
+            <h2>Electronics</h2>
+            <p>Find the best electronics at great prices.</p>
+            <button class="btn">View Products</button>
+        </div>
+        <div class="product-card">
+            <i class="fas fa-tshirt"></i>
+            <h2>Fashion</h2>
+            <p>Latest trends and styles available.</p>
+            <button class="btn">View Products</button>
+        </div>
+        <div class="product-card">
+            <i class="fas fa-couch"></i>
+            <h2>Furniture</h2>
+            <p>High-quality furniture for your home.</p>
+            <button class="btn">View Products</button>
+        </div>
+        <div class="product-card">
+            <i class="fas fa-utensils"></i>
+            <h2>Kitchenware</h2>
+            <p>Best kitchen essentials at unbeatable prices.</p>
+            <button class="btn">View Products</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

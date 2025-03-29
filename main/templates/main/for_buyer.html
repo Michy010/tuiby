@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} For Buyer {% endblock %}
+{% block content %}
+<div class="search-result-descriptions">
+    <div class="back-btn"><p><a href="{% url 'main:home' %}">Back</a></p></div>
+    <div class="results-description">...Search results for 'Nguo' Kinondoni</div>
+</div>
+<div class="results-column">
+    <div class="item">
+        <p class="social-handle" id="textToCopy">@Msita_classic wear</p>
+        <div class="product-description">
+            <i class="fas fa-shopping-bag"></i>
+            {% for seller in sellers %}
+            {% for desc in seller.description %}
+            <p>{{ desc }}</p>
+            {% endfor %}
+            {% endfor %}
+            <p>nguo za kike na kiume</p>
+        </div>
+        <div class="link-social">
+            <button onclick="copyText()">Copy</button>
+            <div class="social-infos">
+                <p>Instagram</p>
+                <div class="social-circle"><i class="fab fa-instagram"></i></div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="item">
+        <p class="social-handle">@Msita_classic wear</p>
+        <div class="product-description">
+            <i class="fas fa-shopping-bag"></i>
+            <p>nguo za kike na kiume</p>
+        </div>
+        <div class="link-social">
+            <button>Copy</button>
+            <div class="social-infos">
+                <p>Instagram</p>
+                <div class="social-circle"><i class="fab fa-instagram"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="item">
+        <p class="social-handle">@Msita_classic wear</p>
+        <div class="product-description">
+            <i class="fas fa-shopping-bag"></i>
+            <p>nguo za kike na kiume</p>
+        </div>
+        <div class="link-social">
+            <button>Copy</button>
+            <div class="social-infos">
+                <p>Instagram</p>
+                <div class="social-circle"><i class="fab fa-instagram"></i></div>
+            </div>
+        </div>
+    </div> -->
+</div>
+<script src="{% static 'main/js/copy_to_clipboard.js' %}"></script>
+{% endblock %}
