@@ -8,12 +8,14 @@ def registerView(request):
         register_form = UserCreationForm(request.POST)
         if register_form.is_valid():
             register_form.save()
+            return redirect ('accounts:login')
     else:
         register_form = UserCreationForm()
         
-    return redirect ('accounts:login')
+    return render (request, 'accounts/register.html', {'register_form':register_form})
 
 def loginView(request):
+    error = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -22,7 +24,9 @@ def loginView(request):
         if user is not None:
             login(request, user)
             return redirect('main:buyer')
-    return render (request, 'accounts/login.html')
+        else:
+            error = 'Invalid Username or Password'
+    return render (request, 'accounts/login.html', {'error':error})
 
 def logoutView(request):
     return render (request, 'accounts/logout.html')

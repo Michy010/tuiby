@@ -2,18 +2,31 @@
 {% load static %}
 {% block title %} LogIn {% endblock %}
 {% block content %}
-<div class="log-in-div">
-    <form action="{% url 'accounts:login' %}" method="post">
-        {% csrf_token %}
-        <div class="username-fields">
-            <label for="username">User Name</label>
-            <input type="text" id="username" name="username" placeholder="Enter Your Name">
-        </div>
-        <div class="password-fields">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter Your Password">
-        </div>
-        <button type="submit">Login</button>
-    </form>
+<div class="login-container">
+    <div class="cloud-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-linkedin"></i>
+    </div>
+    <div class="log-in-div">
+        <form action="{% url 'accounts:login' %}" method="post">
+            {% csrf_token %}
+            {% if error %}
+            <div class="error-message">
+                <p>{{error}}</p>
+            </div>
+            {% endif %}
+            <div class="input-field">
+                <label for="username"><i class="fas fa-user"></i> User Name</label>
+                <input type="text" id="username" name="username" placeholder="Enter Your Name" required>
+            </div>
+            <div class="input-field">
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

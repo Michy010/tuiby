@@ -12,87 +12,42 @@ from django.contrib import messages
 def index(request):
     return render (request, 'main/index.html')
 
-@csrf_exempt
-def for_buyer(request):
-    if request.method == 'POST':
+# Filter sellers based on user's location and query
+def filter_sellers(request):
+    query = request.GET.get('query', '').strip()
+    try:
+        user_latitude = float(request.GET.get('latitude', 0))
+        user_longitude = float(request.GET.get('longitude', 0))
+    except ValueError:
+        return render(request, 'main/for_buyer.html', {"sellers": [], "query": query, "error": "Invalid location data."})
+
+    sellers = []
+    seller_locations = SellerLocation.objects.select_related('user').all()
+
+    for seller in seller_locations:
         try:
-            # Decode and parse request body
-            location_dict = json.loads(request.body.decode('utf-8'))
-            
-            lat1 = float(location_dict.get('latitude', 0))
-            lon1 = float(location_dict.get('longitude', 0))
+            seller_lat = float(seller.latitude)
+            seller_lon = float(seller.longitude)
+            distance = haversine(user_latitude, user_longitude, seller_lat, seller_lon)
 
-            sellers_list = []
-            for seller in SellerLocation.objects.select_related('user'):
-                user = seller.user
+            # Get product info for the seller based on search query
+            product_info = ProductInfo.objects.filter(user=seller.user, product_name__icontains=query).first()
+            if product_info:
+                # Get all social handles linked to the product
+                social_handles = SocialInfo.objects.filter(product_infos=product_info)
 
-                # Get seller information efficiently
-                seller_dict = {
-                    'lat2': seller.latitude,
-                    'lon2': seller.longitude,
-                    'handle': list(SocialInfo.objects.filter(user=user).values_list('handle', flat=True)),
-                    'name': list(ProductInfo.objects.filter(user=user).values_list('product_name', flat=True)),
-                    'description': list(ProductInfo.objects.filter(user=user).values_list('product_descriptions', flat=True))
-                }
-
-                # Calculate distance
-                distance = haversine(lat1, lon1, seller_dict['lat2'], seller_dict['lon2'])
-
-                # Append seller data
-                sellers_list.append({
-                    'handle': seller_dict['handle'],
-                    'name': seller_dict['name'],
-                    'description': seller_dict['description'],
-                    'distance': distance
+                sellers.append({
+                    "distance": round(distance, 2),  # Rounded for better UI
+                    "product_info": product_info,
+                    "social_handles": social_handles
                 })
+        except ValueError:
+            continue  # Skip sellers with invalid coordinates
 
-            # Sort sellers by distance
-            sorted_list = sorted(sellers_list, key=lambda x: x['distance'])
-            return JsonResponse({'sellers': sorted_list}, safe=False)
+    # Sort sellers by nearest distance
+    sellers = sorted(sellers, key=lambda x: x["distance"])
 
-        except Exception as e:
-            return JsonResponse({'Error': str(e)}, status=400)
-
-    elif request.method == 'GET':
-        query = request.GET.get('query', '').strip().lower()
-
-        if not query:
-            return render(request, 'main/for_buyer.html', {'list': []})
-
-        # Optimize filtering with ORM
-        sellers = SellerLocation.objects.filter(
-            Q(productinfo__product_name__icontains=query) |
-            Q(productinfo__product_descriptions__icontains=query)
-        ).distinct()
-
-        sellers_list = [
-            {
-                'handle': list(SocialInfo.objects.filter(user=seller.user).values_list('handle', flat=True)),
-                'name': list(ProductInfo.objects.filter(user=seller.user).values_list('product_name', flat=True)),
-                'description': list(ProductInfo.objects.filter(user=seller.user).values_list('product_descriptions', flat=True)),
-            }
-            for seller in sellers
-        ]
-
-        return render(request, 'main/for_buyer.html', {'sellers': sellers_list})
-
-def get_buyer_location(request):
-    if request.method == 'POST':
-        location = json.loads(request.body)
-        lat1 = float(location.get('latitude', 0))
-        lon1 = float(location.get('longitude', 0))
-
-        request.session['lat1'] = lat1
-        request.session['lon1'] = lon1
-
-    return JsonResponse ({'success': 'Latitude and longitude have successful stored in sessions'})
-
-def get_search_result(request):
-    if request.method == 'GET':
-        query = request.GET.get('query', '')
-        seller = SellerLocation.objects.filter(
-            Q(productinfo__product_name__icontains=query) | Q(productinfo__descriptions__icontains=query)
-        )
+    return render(request, 'main/for_buyer.html', {"sellers": sellers, "query": query})
 
 def for_seller(request):
     return render (request, 'main/for_seller.html')
@@ -133,9 +88,6 @@ def edit_profile(request):
         if password:
             user.set_password(password)
         
-        if profile_pic:
-            user.profile.image = profile_pic 
-
         user.save()
         messages.success(request, "Profile updated successfully!")
         return redirect("edit_profile")

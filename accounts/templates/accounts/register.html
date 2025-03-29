@@ -2,9 +2,43 @@
 {% load static %}
 {% block title %} SignUp {% endblock %}
 {% block content %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ register_form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<div class="signup-container">
+    <div class="cloud-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-instagram"></i>
+        <!-- <i class="fab fa-linkedin"></i> -->
+    </div>
+    <div class="signup-form-div">
+        <h2>Create Account</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            
+            {% if register_form.errors %}
+            <div class="error-message">
+                <p>There were some problems with your registration. Please check the fields and try again.</p>
+            </div>
+            {% endif %}
+            
+            <div class="input-field">
+                <label for="username"><i class="fas fa-user"></i> Username</label>
+                {{ register_form.username }}
+            </div>
+            <div class="input-field">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                {{ register_form.email }}
+            </div>
+            <div class="input-field">
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
+                {{ register_form.password1 }}
+            </div>
+            <div class="input-field">
+                <label for="password2"><i class="fas fa-lock"></i> Confirm Password</label>
+                {{ register_form.password2 }}
+            </div>
+            
+            <button type="submit" class="signup-button">Register</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

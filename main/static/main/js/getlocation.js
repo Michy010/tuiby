@@ -1,31 +1,28 @@
-function getLocation(event) {
-    if (event) event.preventDefault(); 
+function getUserLocationAndSearch(event) {
+    event.preventDefault(); // Prevent form from submitting immediately
 
-    if ('geolocation' in navigator) {
+    let query = document.getElementById("searchInput").value.trim();
+    if (!query) {
+        alert("Please enter a search term.");
+        return;
+    }
+
+    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                let data = {
-                    'latitude': position.coords.latitude,
-                    'longitude': position.coords.longitude
-                };
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
 
-                fetch('/send-location/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => alert('Success:', result))
-                .catch(error => console.error('Error:', error));
+                // Redirect with query and location
+                let searchUrl = `/filter_sellers/?query=${encodeURIComponent(query)}&latitude=${latitude}&longitude=${longitude}`;
+                window.location.href = searchUrl;
             },
             function (error) {
-                alert('Error obtaining location:', error.message);
+                alert("Location access denied. Please allow location services.");
             }
         );
     } else {
-        alert('Geolocation is not supported by this browser.');
+        alert("Geolocation is not supported by your browser.");
     }
 }
+

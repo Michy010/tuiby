@@ -16,8 +16,8 @@
     </a>
 </div>
 <div class="search-bar">
-    <form action="{% url 'main:buyer' %}" method="get">
-        <input type="text" name="query" placeholder="What are you looking for?">
+    <form id="searchForm" onsubmit="getUserLocationAndSearch(event)">
+        <input type="text" name="query" id="searchInput" placeholder="What are you looking for?" required>
         <button type="submit"><i class="fas fa-search" style="color: white;"></i></button>
     </form>
 </div>
