@@ -3,11 +3,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import SellerLocation, SocialInfo, ProductInfo
-from .utils import haversine  
+from .utils import haversine, vincenty_distance  
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .forms import ProductForm
 
 def index(request):
     return render (request, 'main/index.html')
@@ -28,7 +29,7 @@ def filter_sellers(request):
         try:
             seller_lat = float(seller.latitude)
             seller_lon = float(seller.longitude)
-            distance = haversine(user_latitude, user_longitude, seller_lat, seller_lon)
+            distance = vincenty_distance(user_latitude, user_longitude, seller_lat, seller_lon)
 
             # Get product info for the seller based on search query
             product_info = ProductInfo.objects.filter(user=seller.user, product_name__icontains=query).first()
@@ -37,12 +38,12 @@ def filter_sellers(request):
                 social_handles = SocialInfo.objects.filter(product_infos=product_info)
 
                 sellers.append({
-                    "distance": round(distance, 2),  # Rounded for better UI
+                    "distance": round(distance, 2),
                     "product_info": product_info,
                     "social_handles": social_handles
                 })
         except ValueError:
-            continue  # Skip sellers with invalid coordinates
+            continue 
 
     # Sort sellers by nearest distance
     sellers = sorted(sellers, key=lambda x: x["distance"])
@@ -72,7 +73,6 @@ def update_location(request):
     return render(request, "main/SellerLocation.html")
 
 
-
 @login_required
 def edit_profile(request):
     if request.method == "POST":
@@ -96,3 +96,38 @@ def edit_profile(request):
 
 def update_product_view(request):
     return render(request, 'main/GotoProduct.html')
+
+def electronics_product_list(request):
+    user = request.user
+    electronics_products = ProductInfo.objects.filter(user=user, product_category='Electronics')
+    return render (request, 'main/electronics.html', {'electronics_products':electronics_products})
+
+def fashion_product_list(request):
+    user = request.user
+    fashion_products = ProductInfo.objects.filter(user=user, product_category='Fashion')
+    return render (request, 'main/fashion.html', {'fashion_products':fashion_products})
+
+def furniture_product_list(request):
+    user = request.user
+    furniture_products = ProductInfo.objects.filter(user=user, product_category='Furniture')
+    return render (request, 'main/furniture.html', {'furniture_products':furniture_products})
+
+def kitchenware_product_list(request):
+    user = request.user
+    kitchenware_products = ProductInfo.objects.filter(user=user, product_category='Kitchenware')
+    return render (request, 'main/electronics.html', {'kitchenware_products':kitchenware_products})
+
+
+@login_required
+def add_product(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user 
+            product.save()
+            return redirect('main:update-product') 
+    else:
+        form = ProductForm()
+    
+    return render(request, 'main/add_product.html', {'form': form})

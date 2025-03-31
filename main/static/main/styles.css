@@ -138,6 +138,9 @@ button a {
     border-bottom-right-radius: 1.4rem;
     background-color: black;
     width: 2.4rem;
+    padding: 0.4rem;
+    outline: none;
+    border: transparent;
     cursor: pointer;
 }
 .seller-register-link {
@@ -358,9 +361,9 @@ background-color: #34495e;
 }
 
 /* GO TO PRODUCT PAGE */
-.container {
-    width: 80%;
-    margin: auto;
+.product-container {
+    width: 100%;
+    /* margin: auto; */
     padding: 20px;
 }
 .products-header {
@@ -768,4 +771,84 @@ input {
 
 .signup-button:hover {
     background-color: #2980b9;
+}
+
+/* ADD PRODUCT PAGE STYLING */
+.add-product-form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.add-product-form-container form {
+    width: 100%;
+}
+.add-product-h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.add-product-form-group {
+    margin-bottom: 15px;
+}
+.add-product-label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.add-product-submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.add-product-submit-btn:hover {
+    background: #0056b3;
+}
+
+/* PROGUCT LIST PAGES INCLUDING ELECTRONICS, FASHION, FURNITURE AND KITWARE */
+.product-list-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.product-list-category-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+.product-list-product-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.product-list-product-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+.product-list-product-description {
+    font-size: 14px;
+    color: #555;
 }

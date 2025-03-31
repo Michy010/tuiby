@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add Product {% endblock %}
+{% block content %}
+<div class="add-product-form-container">
+    <h2 class="add-product-h2">Add New Product</h2>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="add-product-form-group">
+            <label class="add-product-label">Product Name</label>
+            {{ form.product_name }}
+        </div>
+
+        <div class="add-product-form-group">
+            <label class="add-product-label">Product Description</label>
+            {{ form.product_descriptions }}
+        </div>
+
+        <div class="add-product-form-group">
+            <label class="add-product-label">Category</label>
+            {{ form.product_category }}
+        </div>
+
+        <button type="submit" class="add-product-submit-btn">Add Product</button>
+    </form>
+</div>
+{% endblock %}

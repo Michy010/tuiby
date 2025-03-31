@@ -10,5 +10,5 @@ function copyText() {
 
     document.body.removeChild(textarea);
 
-    alert('Social media Handel copied!');
+    alert('Social media Handle copied!');
 }

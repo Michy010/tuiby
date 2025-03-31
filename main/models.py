@@ -8,9 +8,16 @@ def validate_handle_input(value):
 
 # Create your models here.
 class ProductInfo(models.Model):
+    PRODUCT_CATEGORIES = [
+        ('Electronics', 'laptop'),
+        ('Fashion', 'tshirt'),
+        ('Furniture', 'couch'),
+        ('Kitchenware', 'utensils')
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=15)
     product_descriptions = models.CharField(max_length=100)
+    product_category = models.CharField(max_length=15, choices=PRODUCT_CATEGORIES, default='Fashion')
 
     def __str__(self):
         return self.product_name

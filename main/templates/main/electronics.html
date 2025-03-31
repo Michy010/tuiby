@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Electronics {% endblock %}
+
+{% block content %}
+<div class="product-list-container">
+    <h2 class="product-list-text-center">Electronics</h2>
+    
+    {% if electronics_products %}
+        {% for product in electronics_products %}
+            <div class="product-list-product-item">
+                <p class="product-list-product-name">{{ product.product_name }}</p>
+                <p class="product-list-product-description">{{ product.product_descriptions }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No electronic products available.</p>
+    {% endif %}
+</div>
+{% endblock %}

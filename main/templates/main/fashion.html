@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Fashion {% endblock %}
+
+{% block content %}
+<div class="product-list-container">
+    <h2 class="product-list-text-center">Fashion</h2>
+    
+    {% if fashion_products %}
+        {% for product in fashion_products %}
+            <div class="product-list-product-item">
+                <p class="product-list-product-name">{{ product.product_name }}</p>
+                <p class="product-list-product-description">{{ product.product_descriptions }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No fashion products available.</p>
+    {% endif %}
+</div>
+{% endblock %}
