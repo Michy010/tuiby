@@ -68,7 +68,7 @@ def update_location(request):
                 user=request.user,
                 defaults={"latitude": latitude, "longitude": longitude}
             )
-            return redirect("dashboard") 
+            return redirect('main:update-product') 
     
     return render(request, "main/SellerLocation.html")
 
@@ -76,13 +76,12 @@ def update_location(request):
 @login_required
 def edit_profile(request):
     if request.method == "POST":
-        full_name = request.POST.get("full_name")
+        username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        profile_pic = request.FILES.get("profile_pic")
-
+        
         user = request.user
-        user.first_name, user.last_name = full_name.split(" ", 1) if " " in full_name else (full_name, "")
+        user.username = username
         user.email = email
         
         if password:
@@ -90,7 +89,7 @@ def edit_profile(request):
         
         user.save()
         messages.success(request, "Profile updated successfully!")
-        return redirect("edit_profile")
+        return redirect("main:edit-profile")
     
     return render(request, "main/Edit_profile.html")
 
@@ -100,22 +99,22 @@ def update_product_view(request):
 def electronics_product_list(request):
     user = request.user
     electronics_products = ProductInfo.objects.filter(user=user, product_category='Electronics')
-    return render (request, 'main/electronics.html', {'electronics_products':electronics_products})
+    return render (request, 'main/product_list.html', {'electronics_products':electronics_products})
 
 def fashion_product_list(request):
     user = request.user
     fashion_products = ProductInfo.objects.filter(user=user, product_category='Fashion')
-    return render (request, 'main/fashion.html', {'fashion_products':fashion_products})
+    return render (request, 'main/product_list.html', {'fashion_products':fashion_products})
 
 def furniture_product_list(request):
     user = request.user
     furniture_products = ProductInfo.objects.filter(user=user, product_category='Furniture')
-    return render (request, 'main/furniture.html', {'furniture_products':furniture_products})
+    return render (request, 'main/product_list.html', {'furniture_products':furniture_products})
 
 def kitchenware_product_list(request):
     user = request.user
     kitchenware_products = ProductInfo.objects.filter(user=user, product_category='Kitchenware')
-    return render (request, 'main/electronics.html', {'kitchenware_products':kitchenware_products})
+    return render (request, 'main/product_list.html', {'kitchenware_products':kitchenware_products})
 
 
 @login_required

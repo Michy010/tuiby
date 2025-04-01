@@ -51,6 +51,25 @@
         </div>
     </div>
 
+    <div class="popup-message" id="popup">
+        <p class="greetings-paragraph">Hello! <b>{{ user.username }}</b></p>
+        <p>Thank you for registering in <b>tuiby</b>, you are welcome to
+             increase your business visibility in social medias.</p>
+        <p><em>Before you proceed we would like you to complete your account set up, follow the steps below..</em></p>
+        <ol>
+            <li>Go to update location in your dashboard to
+                 add your shop's location, 
+                 make sure you do this when you're in your shop's location to get accurate coordinates.</li>
+            <li>After adding your Shop's location, 
+                come back to your dashboard and 
+                go to social media handles add your social media handles </li>
+            <li>Then come back to your dashboard, 
+                enter to manage products add your products as much as you can.</li>
+        </ol>
+        <button id="close-popup">Got it</button>
+    </div>
+
+    <button id="reset">reset</button>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
@@ -63,5 +82,24 @@
                 mainContent.style.marginLeft = "250px";
             }
         }
+    </script>
+    <script>
+        let Popup = document.getElementById('popup')
+        let ClosePopup = document.getElementById('close-popup')
+        let reset = document.getElementById('reset')
+
+        if(localStorage.getItem('PopupIsChecked')) {
+            Popup.classList.add('hidden')
+        } else {
+            Popup.classList.remove('hidden')
+        }
+        ClosePopup.addEventListener('click', function() {
+            Popup.classList.add('hidden')
+            localStorage.setItem('PopupIsChecked', 'true')
+        })
+        reset.addEventListener('click', function() {
+            localStorage.removeItem('PopupIsChecked');
+            location.reload();
+        })
     </script>
 {% endblock %}

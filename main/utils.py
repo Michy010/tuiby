@@ -1,30 +1,31 @@
-from math import radians, cos, sin, asin, sqrt
+from math import radians, cos, sin, asin, sqrt, atan, tan, atan2
 
-# Our methods goes here
-# The haversine method to calculate the difference in distance
+# The Haversine method to calculate the difference in distance
 def haversine(lon1, lat1, lon2, lat2):
-    R = 6372.8
+    R = 6372.8  # Radius of Earth in kilometers
 
     dLat = radians(lat2 - lat1)
-    dLon = radians(lon2 -lon1)
+    dLon = radians(lon2 - lon1)
     lat1 = radians(lat1)
     lat2 = radians(lat2)
 
-    a = sin(dLat/2)**2 + cos(lat1) * cos(lat2) * sin(dLon/2)**2
-    c = 2*asin(sqrt(a))
+    a = sin(dLat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dLon / 2) ** 2
+    c = 2 * asin(sqrt(a))
 
     return R * c
 
-from math import radians, atan, tan, cos, sin, sqrt, atan2
-
+# Vincenty's formula for geodesic distance calculation
 def vincenty_distance(lon1, lat1, lon2, lat2):
-    # WGS-84 ellipsoidal parameters
     a = 6378137.0  # Semi-major axis of the Earth (meters)
     f = 1 / 298.257223563  # Flattening
     b = (1 - f) * a  # Semi-minor axis
 
     # Convert degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # If the coordinates are identical, return 0 distance
+    if lon1 == lon2 and lat1 == lat2:
+        return 0.0
 
     L = lon2 - lon1
     U1 = atan((1 - f) * tan(lat1))
@@ -39,6 +40,11 @@ def vincenty_distance(lon1, lat1, lon2, lat2):
     while iter_limit > 0:
         sin_lambda, cos_lambda = sin(lamb), cos(lamb)
         sin_sigma = sqrt((cosU2 * sin_lambda) ** 2 + (cosU1 * sinU2 - sinU1 * cosU2 * cos_lambda) ** 2)
+        
+        # Prevent division by zero error
+        if sin_sigma == 0:
+            return 0.0  # Points are the same
+
         cos_sigma = sinU1 * sinU2 + cosU1 * cosU2 * cos_lambda
         sigma = atan2(sin_sigma, cos_sigma)
 

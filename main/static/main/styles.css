@@ -243,10 +243,11 @@ footer p {
     text-decoration: none;
 }
 
-
+/* FOR SELLER PAGE STYLING */
 /* General Styles */
 .dashboard-container {
 display: flex;
+position: relative;
 height: 100vh;
 }
 
@@ -358,6 +359,40 @@ transition: background 0.3s;
 
 .btn:hover {
 background-color: #34495e;
+}
+
+.popup-message {
+    max-width: 50%;
+    position: absolute;
+    top: 15%;
+    right: 25%;
+    margin: auto;
+    padding: 3rem;
+    background-color: rgba(255, 0, 0, 1);
+}
+.popup-message button {
+    padding: 12px;
+    width: 80px;
+    margin-top: 10px;
+    float: right;
+    cursor: pointer;
+    border: none;
+    background-color: rgba(255, 255, 255, 1);
+    color: #000;
+}
+.popup-message p, .popup-message ol li {
+    margin-block: 10px;
+    text-align: justify;
+    color: #f9f9f9;
+    font-family: 'Georgia';
+}
+.popup-message button:hover {
+    background-color: rgba(216, 195, 195, 0.8);
+    transform: scale(1.1);
+    transition: 0.3s background-color;
+}
+.hidden {
+    display: none;
 }
 
 /* GO TO PRODUCT PAGE */
@@ -516,7 +551,7 @@ input[readonly] {
     margin: 2rem;
 }
 
-.container {
+.edit-profile-container {
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -525,41 +560,22 @@ input[readonly] {
     text-align: center;
 }
 
-h2 {
+.edit-profile-h2 {
     color: #333;
     margin-bottom: 20px;
 }
 
-.profile-picture {
-    margin-bottom: 15px;
-}
-
-.profile-picture img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 10px;
-    border: 2px solid #ddd;
-}
-
-.profile-picture input {
-    display: block;
-    margin: 0 auto;
-}
-
-.form-group {
+.edit-profile-form-group {
     margin-bottom: 15px;
     text-align: left;
 }
 
-label {
+.edit-profile-label {
     font-size: 14px;
     color: #555;
 }
 
-input {
+.edit-profile-input {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -568,7 +584,7 @@ input {
     background-color: #f9f9f9;
 }
 
-.btn {
+.edit-profile-btn {
     width: 100%;
     padding: 10px;
     border: none;
@@ -578,14 +594,22 @@ input {
     margin-top: 10px;
 }
 
-.btn-save {
+.edit-profile-btn-save {
     background-color: #28a745;
     color: white;
 }
 
-.btn-save:hover {
+.edit-profile-btn-save:hover {
     background-color: #218838;
 }
+.message-success {
+    width: 100%;
+    margin-bottom: 5px;
+    background: rgba(0, 255, 0, 0.6);
+    color: #ffffff;
+    padding: 15px;
+}
+
 
 /* AUTHENTICATION PAGES */
 /* LOGIN */
@@ -595,7 +619,7 @@ input {
     text-align: center;
     background: linear-gradient(to bottom, #87CEFA, #ffffff);
     padding: 40px;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -688,7 +712,7 @@ input {
     text-align: center;
     background: linear-gradient(to bottom, #87CEFA, #ffffff);
     padding: 40px;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 

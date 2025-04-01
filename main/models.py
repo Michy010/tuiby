@@ -9,10 +9,10 @@ def validate_handle_input(value):
 # Create your models here.
 class ProductInfo(models.Model):
     PRODUCT_CATEGORIES = [
-        ('Electronics', 'laptop'),
-        ('Fashion', 'tshirt'),
-        ('Furniture', 'couch'),
-        ('Kitchenware', 'utensils')
+        ('Electronics', 'Electronics'),
+        ('Fashion', 'Fashion'),
+        ('Furniture', 'Furniture'),
+        ('Kitchenware', 'Kitchenware')
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=15)
