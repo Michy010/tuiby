@@ -25,8 +25,9 @@
         <!-- Main Content -->
         <div class="main-content" id="main-content">
             <div class="top-bar">
-                <i class="fas fa-bars menu-icon" onclick="toggleSidebar()"></i>
+                <i class="fas fa-bars menu-icon" id="toggleButton" onclick="toggleSidebar()"></i>
                 <h2>Dashboard</h2>
+                <button id="reset">reset</button>
             </div>
 
             <h1 class="title">Seller Dashboard</h1>
@@ -44,8 +45,13 @@
                 </div>
                 <div class="card">
                     <h2>Edit Profile</h2>
-                    <p>Update your profile details and social links.</p>
+                    <p>Update your profile details.</p>
                     <button class="btn"><a href="{% url 'main:edit-profile' %}">Edit Profile</a></button>
+                </div>
+                <div class="card">
+                    <h2>Add your social media handles</h2>
+                    <p>Update your profile details and social links.</p>
+                    <button class="btn"><a href="{% url 'main:add-social-handle' %}">Add handles</a></button>
                 </div>
             </div>
         </div>
@@ -69,18 +75,13 @@
         <button id="close-popup">Got it</button>
     </div>
 
-    <button id="reset">reset</button>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
-            const mainContent = document.getElementById("main-content");
-            if (sidebar.style.left === "0px") {
-                sidebar.style.left = "-250px";
-                mainContent.style.marginLeft = "0";
-            } else {
-                sidebar.style.left = "0px";
-                mainContent.style.marginLeft = "250px";
-            }
+            const toggleButton = document.getElementById('toggleButton')
+            toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar')
+            })
         }
     </script>
     <script>

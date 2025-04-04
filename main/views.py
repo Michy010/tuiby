@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import ProductForm
+from .forms import ProductForm, SocialInfoForm
+
 
 def index(request):
     return render (request, 'main/index.html')
@@ -130,3 +131,19 @@ def add_product(request):
         form = ProductForm()
     
     return render(request, 'main/add_product.html', {'form': form})
+
+
+@login_required  
+def social_media_infos(request):
+    if request.method == "POST":
+        form = SocialInfoForm(request.POST)
+        if form.is_valid():
+            social_info = form.save(commit=False) 
+            social_info.user = request.user  
+            social_info.save()
+            messages.success (request, 'Social media handle saved successful')  
+            return redirect('main:add-social-handle') 
+    else:
+        form = SocialInfoForm()
+    
+    return render(request, 'main/social_media_infos.html', {'form': form})

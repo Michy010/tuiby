@@ -12,7 +12,7 @@
 <!-- Corrected the button to properly trigger getLocation() -->
 <div class="access-location-btn">
     <a href="javascript:void(0)" onclick="getLocation(event)">
-        <p>Allow Tuiby to access your location</p>
+        <p>Allow location access</p>
     </a>
 </div>
 <div class="search-bar">
@@ -21,6 +21,6 @@
         <button type="submit"><i class="fas fa-search" style="color: white;"></i></button>
     </form>
 </div>
-<div class="seller-register-link"><a href="{% url 'accounts:register' %}">Register as seller</a></div>
+<div class="seller-register-link"><a href="{% url 'accounts:register' %}">Register as seller</a></div><br><br>
 <script src="{% static 'main/js/getlocation.js' %}"></script>
 {% endblock %}

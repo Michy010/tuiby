@@ -28,12 +28,12 @@ class SocialInfo(models.Model):
         ('Instagram', 'instagram'),
         ('Ticktok', 'ticktok')
     ]
-    product_infos = models.ForeignKey(ProductInfo, on_delete=models.CASCADE)
+    product_infos = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, default=1)
     social_category = models.CharField(max_length=10, choices=SOCIAL_CATEGORIES, default='Instagram')
-    handle = models.CharField(max_length=30, validators=[validate_handle_input])
+    handle = models.CharField(max_length=30, validators=[validate_handle_input], default='@Placeholder')
     
     def __str__(self):
-        return self.social_category
+        return self.handle
     
 class SellerLocation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

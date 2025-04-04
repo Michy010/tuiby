@@ -21,7 +21,10 @@
             <img src="{% static 'main/images/tuiby-logo.png' %}" alt="logo image">
             <p class="tuiby-paragraph">tuiby</p>
         </div>
-        <div class="menu-items">
+        <div class="hamburger" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="menu-items" id="menu">
             <ul>
                 <li><a href="{% url 'main:home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
                 <li><a href="{% url 'main:buyer' %}" class="{% if request.path == '/buyer/' %}active{% endif %}">For buyer</a></li>
@@ -30,6 +33,11 @@
             </ul>
         </div>
     </div>
+    <div class="contents">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
     <footer>
         <div class="copyright">
             <p>&copy;2025Tuiby.All rights reserved</p>
@@ -38,7 +46,15 @@
             <p><a href="">Terms</a> | <a href="">Privacy</a> | <a href="">Contact</a></p>
         </div>
     </footer>
-    {% block content %}
-    {% endblock %}
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>
