@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Edit Product {% endblock %}
+{% block content %}
+<div class="product-editing-container">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form_as_p}}
+    </form>
+</div>
+{% endblock %}

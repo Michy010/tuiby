@@ -10,13 +10,13 @@
                 <i class="fas fa-times close-icon" onclick="toggleSidebar()"></i>
             </div>
             <nav class="nav-links">
-                <a href="#" class="nav-item">
+                <a href="" class="nav-item">
                     <i class="fas fa-box icon"></i> <span>Products</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="" class="nav-item">
                     <i class="fas fa-map-marker-alt icon"></i> <span>Location</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="" class="nav-item">
                     <i class="fas fa-user icon"></i> <span>Profile</span>
                 </a>
             </nav>
@@ -30,13 +30,13 @@
                 <button id="reset">reset</button>
             </div>
 
-            <h1 class="title">Seller Dashboard</h1>
+            <h1 class="title">{{user.username}}'s Dashboard</h1>
 
             <div class="cards-container">
                 <div class="card">
                     <h2>Manage Products</h2>
                     <p>Add, update, or remove products from your store.</p>
-                    <button class="btn"><a href="{% url 'main:update-product' %}">Go to Products</a></button>
+                    <button class="btn"><a href="{% url 'main:product-list' %}">Go to Products</a></button>
                 </div>
                 <div class="card">
                     <h2>Update Location</h2>
@@ -78,12 +78,21 @@
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
-            const toggleButton = document.getElementById('toggleButton')
-            toggleButton.addEventListener('click', function() {
-                sidebar.classList.toggle('sidebar')
-            })
+            const toggleButton = document.getElementById("toggleButton");
+    
+            sidebar.classList.add("show");
+            toggleButton.style.display = "none";
         }
+    
+        document.querySelector(".close-icon").addEventListener("click", function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleButton = document.getElementById("toggleButton");
+    
+            sidebar.classList.remove("show");
+            toggleButton.style.display = "inline-block";
+        });
     </script>
+    
     <script>
         let Popup = document.getElementById('popup')
         let ClosePopup = document.getElementById('close-popup')

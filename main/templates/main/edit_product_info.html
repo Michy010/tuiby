@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Edit Product Info {% endblock %}
+{% block content %}
+<div class="editing-form-container">
+    <h2 class="editing-h2">Edit Product Info</h2>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="message-success">{{message}}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post" class="editing-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="product-editing-form-field">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: red;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="editing-btn-save">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

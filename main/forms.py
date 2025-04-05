@@ -1,5 +1,5 @@
 from django import forms
-from .models import ProductInfo, SocialInfo
+from .models import ProductInfo, SocialInfo, SellerLocation
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -26,3 +26,8 @@ class SocialInfoForm(forms.ModelForm):
             'social_category': forms.Select(attrs={'class': 'social-input-field'}),
             'handle': forms.TextInput(attrs={'class': 'social-input-field', 'placeholder': 'Enter your social handle eg @Msixoutfits'}),
         }
+
+class SellerLocationForm(forms.ModelForm):
+    class Meta:
+        model = SellerLocation
+        fields = ['latitude', 'longitude']

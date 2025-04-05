@@ -4,11 +4,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import SellerLocation, SocialInfo, ProductInfo
 from .utils import haversine, vincenty_distance  
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import ProductForm, SocialInfoForm
+from .forms import ProductForm, SocialInfoForm, SellerLocationForm
 
 
 def index(request):
@@ -52,7 +52,14 @@ def filter_sellers(request):
     return render(request, 'main/for_buyer.html', {"sellers": sellers, "query": query})
 
 def for_seller(request):
-    return render (request, 'main/for_seller.html')
+    product = ProductInfo.objects.filter(user=request.user).first()
+    location = SellerLocation.objects.filter(user=request.user).first()
+    social = SocialInfo.objects.filter(product_infos__user=request.user).first()
+    return render (request, 'main/for_seller.html', {
+        'product': product,
+        'location': location,
+        'social': social,
+    })
 
 def faqs_views(request):
     return render(request, 'main/faqs.html')
@@ -69,7 +76,7 @@ def update_location(request):
                 user=request.user,
                 defaults={"latitude": latitude, "longitude": longitude}
             )
-            return redirect('main:update-product') 
+            return redirect('main:product-list') 
     
     return render(request, "main/SellerLocation.html")
 
@@ -95,28 +102,36 @@ def edit_profile(request):
     return render(request, "main/Edit_profile.html")
 
 def update_product_view(request):
-    return render(request, 'main/GotoProduct.html')
+    return render(request, 'main/product_list.html')
 
-def electronics_product_list(request):
+def product_list(request):
     user = request.user
-    electronics_products = ProductInfo.objects.filter(user=user, product_category='Electronics')
-    return render (request, 'main/product_list.html', {'electronics_products':electronics_products})
-
-def fashion_product_list(request):
-    user = request.user
-    fashion_products = ProductInfo.objects.filter(user=user, product_category='Fashion')
-    return render (request, 'main/product_list.html', {'fashion_products':fashion_products})
-
-def furniture_product_list(request):
-    user = request.user
-    furniture_products = ProductInfo.objects.filter(user=user, product_category='Furniture')
-    return render (request, 'main/product_list.html', {'furniture_products':furniture_products})
-
-def kitchenware_product_list(request):
-    user = request.user
-    kitchenware_products = ProductInfo.objects.filter(user=user, product_category='Kitchenware')
-    return render (request, 'main/product_list.html', {'kitchenware_products':kitchenware_products})
-
+    products = ProductInfo.objects.filter(user=user)
+    fashion = []
+    furniture = []
+    electronics = []
+    kitchenware = []
+    other = []
+    for product in products:
+        if product.product_category =='Fashion':
+            fashion.append(product)
+        elif product.product_category == 'Furniture':
+            furniture.append(product)
+        elif product.product_category == 'Electronics':
+            electronics.append(product)
+        elif product.product_category == 'Kitchenware':
+            kitchenware.append(product)
+        else:
+            other.append(product)
+    return render (request, 'main/product_list.html', {
+        'products': {
+            'Electronics': electronics,
+            'Fashion': fashion,
+            'Kitchenware':kitchenware,
+            'Other':other,
+            'Furniture':furniture
+        }
+    })
 
 @login_required
 def add_product(request):
@@ -126,12 +141,11 @@ def add_product(request):
             product = form.save(commit=False)
             product.user = request.user 
             product.save()
-            return redirect('main:update-product') 
+            return redirect('main:product-list') 
     else:
         form = ProductForm()
     
     return render(request, 'main/add_product.html', {'form': form})
-
 
 @login_required  
 def social_media_infos(request):
@@ -147,3 +161,43 @@ def social_media_infos(request):
         form = SocialInfoForm()
     
     return render(request, 'main/social_media_infos.html', {'form': form})
+
+# EDIT PAGE VIEWS
+@login_required
+def edit_product_info(request, pk):
+    product = get_object_or_404(ProductInfo, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Changes successful updated')
+            return redirect('main:edit-product', product.pk)
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'main/edit_product_info.html', {'form': form, 'product': product})
+
+@login_required
+def delete_product(request, pk):
+    product = get_object_or_404(ProductInfo, pk=pk, user=request.user)
+
+    if request.method == 'POST':
+        product_name = product.product_name 
+        product.delete()
+        messages.success(request, f'{product_name} was deleted successfully!')
+        return redirect('main:product-list')
+
+    return render(request, 'main/confirm_delete.html', {'product': product})
+
+
+@login_required
+def edit_social_info(request, pk):
+    social = get_object_or_404(SocialInfo, pk=pk, product_infos__user=request.user)
+    if request.method == 'POST':
+        form = SocialInfoForm(request.POST, instance=social)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Changes successful updated')
+            return redirect('main:edit_social', social.pk)
+    else:
+        form = SocialInfoForm(instance=social)
+    return render(request, 'main/edit_social_info.html', {'form': form}, {'social':social})

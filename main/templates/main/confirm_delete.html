@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .delete-product-container {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .delete-heading {
+            font-size: 24px;
+            color: #c0392b;
+            margin-bottom: 20px;
+        }
+
+        .delete-text {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .delete-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-cancel {
+            background-color: #3498db;
+        }
+
+        .btn-cancel:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-product-container">
+        <h2 class="delete-heading">Confirm Delete</h2>
+        <p class="delete-text">Are you sure you want to delete <strong>{{ product.product_name }}</strong>?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="delete-buttons">
+                <button type="submit" class="btn btn-delete">Yes, Delete</button>
+                <a href="{% url 'main:product-list' %}" class="btn btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
