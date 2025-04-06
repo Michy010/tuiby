@@ -1,0 +1,1161 @@
+/* GENERAL STYLING */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+.contents {
+    flex: 1;
+}
+button a {
+    text-decoration: none;
+    color: white;
+}
+/* MENU BAR STYLING */
+.menu-bar {
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
+}
+/* Logo styling */
+.logo {
+    display: flex;
+}
+.logo img {
+    max-width: 80px;
+}
+.tuiby-paragraph {
+    padding-block: 30px;
+    color: #000;
+    font: 20px bolder;
+}
+/* Menu items styling */
+.menu-items ul {
+    display: flex;
+    padding: 20px;
+}
+.menu-items ul li {
+    margin-inline: 10px;
+    list-style: none;
+}
+.menu-items ul li::after{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: tomato;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+.menu-items ul li:hover::after{
+    width: 100%;
+}
+.menu-items ul li a {
+    text-decoration: none;
+    font: 20px bolder;
+}
+.active {
+    color: tomato;
+}
+
+.menu-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: white;
+}
+
+.hamburger {
+    color: #000;
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        z-index: 2;
+        top: 95px;
+        left: 0;
+        width: 100%;
+        background-color: #add8e6;
+        text-align: center;
+    }
+
+    .menu-items ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .menu-items ul li {
+        padding: 15px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+
+/* HOME PAGE STYLING */
+.main-header {
+    text-align: center;
+    margin-top: 3.5rem;
+    color: tomato;
+}
+@media screen and (max-width:768px) {
+    .main-header {
+        font-size: 1.2rem;
+    }
+}
+
+.social-media-icon {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+.double-angle-quotation-mark {
+    margin-top: 3rem;
+}
+.gradient-icon {
+    font-size: 20px; 
+    font-weight: bold;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), tomato);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+.outer-circle {
+    border-radius: 50%;
+    position: relative;
+    margin-top: 2rem;
+    width: 50px;
+    height: 50px;
+    border: 3px solid black;
+}
+.inner-circle {
+    width: 38px;
+    position: relative;
+    bottom: -3px;
+    right: -3px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.inner-circle i {
+    font-size: 20px;
+    position: absolute;
+    right: 9px;
+    bottom: 9px;
+}
+.access-location-btn {
+    width: 20%;
+    margin: auto;
+    margin-top: 1.2rem;
+    padding: 0.4rem;
+    border-radius: 1.4rem;
+    background-color: black;
+}
+@media screen and (max-width:768px){
+    .access-location-btn {
+        width: 73%;
+    }
+}
+.access-location-btn a {
+    text-decoration: none;
+}
+.access-location-btn a p {
+    color: #ffff;
+    text-align: center;
+}
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.4rem;
+}
+.search-bar form input {
+    width: 14.5rem;
+    padding: 0.4rem;
+    outline: none;
+    padding-left: 0.9rem;
+    border-right: transparent;
+    border-top-left-radius: 1.4rem;
+    border-bottom-left-radius: 1.4rem;
+}
+.search-bar form button {
+    border-top-right-radius: 1.4rem;
+    border-bottom-right-radius: 1.4rem;
+    background-color: black;
+    width: 2.4rem;
+    padding: 0.4rem;
+    outline: none;
+    border: transparent;
+    cursor: pointer;
+}
+
+.seller-register-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.2rem;
+}
+.seller-register-link a {
+    color: tomato;
+}
+@media screen and (max-width:768px) {
+    .seller-register-link a {
+        margin-bottom: 2rem;
+    }
+}
+
+/* STYLING THE FOR BUYER PAGE  */
+.search-result-descriptions {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.4rem;
+    margin-left: 1.4rem;
+    justify-content: center;
+}
+.results-column {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 2rem 2rem;
+}
+@media screen and (max-width:768px) {
+    .results-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+    }
+}
+.item {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 1.2rem;
+}
+.social-handle {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-description {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.product-description p{
+    font-style: italic;
+}
+.product-description i {
+    color: orangered;
+}
+.link-social {
+    display: flex;
+    justify-content: space-between;
+}
+.link-social button {
+    width: 6rem;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 1);
+    border: none;
+    border-radius: 5px;
+    color: #ffff;
+    cursor: pointer;
+} 
+.social-circle {
+    position: relative;
+    border: none;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.social-circle i {
+    font-size: 10px;
+    color: #ffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.social-infos {
+    display: flex;
+    gap: 5px;
+}
+/* FOOTER STYLING */
+footer {
+    padding: 1.5rem;
+    width: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+}
+@media (max-width:767px) {
+    footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+footer p {
+    color: #ffff;
+}
+.quick-links p a {
+    color: #ffff;
+    text-decoration: none;
+}
+
+/* FOR SELLER PAGE STYLING */
+/* General Styles */
+.dashboard-container {
+    display: flex;
+    gap: 2rem;
+    position: relative;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 20%;
+    display: block;
+    background-color: #2c3e50;
+    color: white;
+    height: 100vh;
+    padding-top: 20px;
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: #2c3e50;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .close-icon {
+        display: block;
+        color: white;
+    }
+
+    #toggleButton {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 767px) {
+    .main-content {
+        position: relative;
+        z-index: 0;
+    }
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+.sidebar-header h2 {
+    color: #fff;
+}
+
+.close-icon {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+@media (max-width:767px) {
+    .close-icon {
+        display: block;
+        color:#fff;
+    }
+}
+
+.nav-links {
+display: flex;
+flex-direction: column;
+margin-top: 20px;
+}
+
+.nav-item {
+display: flex;
+align-items: center;
+padding: 15px 20px;
+color: white;
+text-decoration: none;
+transition: background 0.3s;
+}
+
+.nav-item:hover {
+background-color: #34495e;
+}
+
+.icon {
+margin-right: 10px;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cards-container {
+    display: flex;
+    gap: 1.4rem;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background-color: #34495e;
+}
+
+.popup-message {
+    max-width: 50%;
+    position: absolute;
+    top: 15%;
+    right: 25%;
+    margin: auto;
+    padding: 3rem;
+    background-color: rgba(255, 0, 0, 1);
+}
+.popup-message button {
+    padding: 12px;
+    width: 80px;
+    margin-top: 10px;
+    float: right;
+    cursor: pointer;
+    border: none;
+    background-color: rgba(255, 255, 255, 1);
+    color: #000;
+}
+.popup-message p, .popup-message ol li {
+    margin-block: 10px;
+    text-align: justify;
+    color: #f9f9f9;
+    font-family: 'Georgia';
+}
+.popup-message button:hover {
+    background-color: rgba(216, 195, 195, 0.8);
+    transform: scale(1.1);
+    transition: 0.3s background-color;
+}
+.hidden {
+    display: none;
+}
+
+@media screen and (max-width:768px) {
+    .popup-message p, .popup-message ol li {
+        margin-block: 8px;
+    }
+    .popup-message {
+        position: absolute;
+        max-width: 100%;
+        margin-left: 10%;
+        right: 10%;
+        top: 45%;
+    }
+}
+/* UPDATE LOCATION PAGE */
+
+.body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 2rem;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-location {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-location:hover {
+    background-color: #0056b3;
+}
+
+.btn-save {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: #218838;
+}
+
+.btn-save:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* EDIT PROFILE PAGE */
+.edit-profile-body {
+    font-family: Arial, sans-serif;
+    background-color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    margin: 2rem;
+}
+
+.edit-profile-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+.edit-profile-h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.edit-profile-form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.edit-profile-label {
+    font-size: 14px;
+    color: #555;
+}
+
+.edit-profile-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.edit-profile-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.edit-profile-btn-save {
+    background-color: #28a745;
+    color: white;
+}
+
+.edit-profile-btn-save:hover {
+    background-color: #218838;
+}
+.message-success {
+    width: 100%;
+    margin-bottom: 5px;
+    background: rgba(0, 255, 0, 0.6);
+    color: #ffffff;
+    padding: 15px;
+}
+
+
+/* AUTHENTICATION PAGES */
+/* LOGIN */
+/* Container styling */
+.login-container {
+    position: relative;
+    text-align: center;
+    background: linear-gradient(to bottom, #87CEFA, #ffffff);
+    padding: 40px;
+    /* border-radius: 15px; */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Social media cloud icons */
+.cloud-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cloud-icons i {
+    font-size: 30px;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Login form box */
+.log-in-div {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+}
+
+/* Input field styling */
+.input-field {
+    margin-bottom: 15px;
+    position: relative;
+    text-align: left;
+}
+
+.input-field label {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.input-field i {
+    margin-right: 8px;
+    color: #3498db;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Button styling */
+.login-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.login-button:hover {
+    background-color: #2980b9;
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* REGISTER PAGE */
+/* General container styling */
+.signup-container {
+    position: relative;
+    text-align: center;
+    background: linear-gradient(to bottom, #87CEFA, #ffffff);
+    padding: 40px;
+    /* border-radius: 15px; */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Social media icons */
+.cloud-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cloud-icons i {
+    font-size: 30px;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Form container styling */
+.signup-form-div {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Input field styling */
+.input-field {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.input-field label {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.input-field i {
+    margin-right: 8px;
+    color: #3498db;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Button styling */
+.signup-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.signup-button:hover {
+    background-color: #2980b9;
+}
+
+/* ADD PRODUCT PAGE STYLING */
+.add-product-form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.add-product-form-container form {
+    width: 100%;
+}
+.add-product-h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.add-product-form-group {
+    margin-bottom: 15px;
+}
+.add-product-label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.add-product-submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.add-product-submit-btn:hover {
+    background: #0056b3;
+}
+
+/* ADD SOCIAL MEDIA HANDLES PAGE */
+/* Container Box */
+.social-container {
+    width: 400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Heading */
+.social-h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form Styles */
+.seller-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels */
+.seller-form label {
+    font-weight: bold;
+    text-align: left;
+    display: block;
+}
+
+/* Input Fields */
+.social-input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Submit Button */
+.seller-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+}
+
+.seller-form button:hover {
+    background-color: #0056b3;
+}
+
+/* EDIT PAGES STYLING */
+
+.editing-form-container {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 400px;
+    margin: 50px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.editing-h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.editing-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.editing-form p {
+    margin-bottom: 15px;
+}
+
+.editing-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.editing-form input, .editing-form select {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.editing-btn-save {
+    padding: 10px;
+    background-color: #007b4f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.editing-btn-save:hover {
+    background-color: #005c3c;
+}
+
+
+/* PRODUCT LIST TABLE STYLE */
+    .product-list-container {
+        margin: 2rem;
+    }
+    .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .add-product-btn {
+        margin: 2rem;
+        float: right;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    .product-table th, .product-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .product-table th {
+        background-color: #333;
+        color: white;
+    }
+
+    .product-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Action Buttons Container */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        /* flex-wrap: wrap; */
+    }
+
+    .btn {
+        padding: 6px 12px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        border-radius: 4px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .btn-edit {
+        background-color: #4CAF50;
+        width: 30%;
+    }
+
+    .btn-delete {
+        background-color: #f44336;
+        width: 30%;
+    }
+    @media screen and (max-width:767px) {
+        .btn-edit, .btn-delete {
+            width: 100%;
+        }
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        padding: 8px 12px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .pagination a.active {
+        background-color: #333;
+        color: white;
+    }
+
+    .pagination a:hover {
+        background-color: #ddd;
+    }
+
+    /* Responsive tweak for small screens */
+    @media screen and (max-width: 480px) {
+        .action-buttons {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+
+/* PRODUCT LIST PAGINATION */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+}
+
+.pagination span.disabled {
+    color: #999;
+    pointer-events: none;
+}

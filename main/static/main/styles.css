@@ -383,12 +383,7 @@ footer p {
     font-size: 20px;
 }
 
-@media (max-width:767px) {
-    .close-icon {
-        display: block;
-        color:#fff;
-    }
-}
+
 
 .nav-links {
 display: flex;
@@ -428,6 +423,7 @@ margin-right: 10px;
     padding: 15px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 .menu-icon {
     font-size: 24px;
