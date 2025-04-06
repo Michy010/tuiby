@@ -14,9 +14,8 @@ urlpatterns = [
     path('update-product/', views.update_product_view, name='update-product'),
     path('add-product/', views.add_product, name='add_product'),
     path('delete-product/<int:pk>/', views.delete_product, name='delete-product'),
-    path('add-social-handle/', views.social_media_infos, name='add-social-handle'),
+    # path('add-social-handle/', views.social_media_infos, name='add-social-handle'),
 
     # EDIT URLS
     path('edit-product/product/<int:pk>/', views.edit_product_info, name='edit-product'),
-    path('edit/social/<int:pk>/', views.edit_social_info, name='edit_social'),
 ]

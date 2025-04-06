@@ -7,7 +7,6 @@
         <i class="fab fa-facebook"></i>
         <i class="fab fa-twitter"></i>
         <i class="fab fa-instagram"></i>
-        <!-- <i class="fab fa-linkedin"></i> -->
     </div>
     <div class="signup-form-div">
         <h2>Create Account</h2>
@@ -29,16 +28,25 @@
                 {{ register_form.email }}
             </div>
             <div class="input-field">
-                <label for="password"><i class="fas fa-lock"></i> Password</label>
-                {{ register_form.password1 }}
-            </div>
+                <label for="password1"><i class="fas fa-lock"></i> Password</label>
+                <div style="position: relative;">
+                    {{ register_form.password1 }}
+                    <i class="fas fa-eye-slash toggle-password" toggle="#id_password1"
+                       style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+                </div>
+            </div>            
             <div class="input-field">
-                <label for="password2"><i class="fas fa-lock"></i> Confirm Password</label>
-                {{ register_form.password2 }}
-            </div>
+                <label for="password1"><i class="fas fa-lock"></i> Password</label>
+                <div style="position: relative;">
+                    {{ register_form.password2}}
+                    <i class="fas fa-eye-slash toggle-password" toggle="#id_password2"
+                       style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+                </div>
+            </div>            
             
             <button type="submit" class="signup-button">Register</button>
         </form>
     </div>
 </div>
+<script src="{% static 'main/js/password_show.js' %}"></script>
 {% endblock %}

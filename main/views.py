@@ -9,14 +9,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import ProductForm, SocialInfoForm, SellerLocationForm
+from django.core.paginator import Paginator
 
 
 def index(request):
     return render (request, 'main/index.html')
 
-# Filter sellers based on user's location and query
 def filter_sellers(request):
     query = request.GET.get('query', '').strip()
+    
+    # Try to get user location from request parameters
     try:
         user_latitude = float(request.GET.get('latitude', 0))
         user_longitude = float(request.GET.get('longitude', 0))
@@ -26,6 +28,7 @@ def filter_sellers(request):
     sellers = []
     seller_locations = SellerLocation.objects.select_related('user').all()
 
+    # Iterate through all sellers and calculate distance, then filter by query
     for seller in seller_locations:
         try:
             seller_lat = float(seller.latitude)
@@ -44,13 +47,22 @@ def filter_sellers(request):
                     "social_handles": social_handles
                 })
         except ValueError:
-            continue 
+            continue
 
     # Sort sellers by nearest distance
     sellers = sorted(sellers, key=lambda x: x["distance"])
 
-    return render(request, 'main/for_buyer.html', {"sellers": sellers, "query": query})
+    #showing 5 sellers per page
+    paginator = Paginator(sellers, 5) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
+    return render(request, 'main/for_buyer.html', {
+        "sellers": page_obj,
+        "query": query,
+    })
+
+@login_required(login_url='accounts:login')
 def for_seller(request):
     product = ProductInfo.objects.filter(user=request.user).first()
     location = SellerLocation.objects.filter(user=request.user).first()
@@ -135,46 +147,46 @@ def product_list(request):
 
 @login_required
 def add_product(request):
-    if request.method == "POST":
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            product = form.save(commit=False)
-            product.user = request.user 
-            product.save()
-            return redirect('main:product-list') 
-    else:
-        form = ProductForm()
-    
-    return render(request, 'main/add_product.html', {'form': form})
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST)
+        social_form = SocialInfoForm(request.POST)
 
-@login_required  
-def social_media_infos(request):
-    if request.method == "POST":
-        form = SocialInfoForm(request.POST)
-        if form.is_valid():
-            social_info = form.save(commit=False) 
-            social_info.user = request.user  
+        if product_form.is_valid() and social_form.is_valid():
+            product = product_form.save(commit=False)
+            product.user = request.user
+            product.save()
+
+            social_info = social_form.save(commit=False)
+            social_info.product_infos = product  # associate with saved product
             social_info.save()
-            messages.success (request, 'Social media handle saved successful')  
-            return redirect('main:add-social-handle') 
+
+            return redirect('main:product-list')
     else:
-        form = SocialInfoForm()
-    
-    return render(request, 'main/social_media_infos.html', {'form': form})
+        product_form = ProductForm()
+        social_form = SocialInfoForm()
+
+    return render(request, 'main/add_product.html', {
+        'product_form': product_form,
+        'social_form': social_form
+    })
+
 
 # EDIT PAGE VIEWS
 @login_required
 def edit_product_info(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk, user=request.user)
+    social = SocialInfo.objects.filter(product_infos=product).first()
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
-        if form.is_valid():
+        social_form = SocialInfoForm(request.POST, instance=social)
+        if form.is_valid() and social_form.is_valid():
             form.save()
             messages.success(request, 'Changes successful updated')
             return redirect('main:edit-product', product.pk)
     else:
         form = ProductForm(instance=product)
-    return render(request, 'main/edit_product_info.html', {'form': form, 'product': product})
+        social_form = SocialInfoForm(instance=social)
+    return render(request, 'main/edit_product_info.html', {'form': form, 'product': product,'social_form':social_form})
 
 @login_required
 def delete_product(request, pk):
@@ -187,17 +199,3 @@ def delete_product(request, pk):
         return redirect('main:product-list')
 
     return render(request, 'main/confirm_delete.html', {'product': product})
-
-
-@login_required
-def edit_social_info(request, pk):
-    social = get_object_or_404(SocialInfo, pk=pk, product_infos__user=request.user)
-    if request.method == 'POST':
-        form = SocialInfoForm(request.POST, instance=social)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Changes successful updated')
-            return redirect('main:edit_social', social.pk)
-    else:
-        form = SocialInfoForm(instance=social)
-    return render(request, 'main/edit_social_info.html', {'form': form}, {'social':social})

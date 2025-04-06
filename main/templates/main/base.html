@@ -31,6 +31,7 @@
                 <li><a href="{% url 'main:buyer' %}" class="{% if request.path == '/buyer/' %}active{% endif %}">For buyer</a></li>
                 <li><a href="{% url 'main:seller' %}" class="{% if request.path == '/seller/' %}active{% endif %}">For seller</a></li>
                 <li><a href="{%url 'main:faqs' %}" class="{% if request.path == 'faqs' %}active{% endif %}">FAQs</a></li>
+                <li><a href="{%url 'accounts:login' %}" class="{% if request.path == 'faqs' %}active{% endif %}">Sign In</a></li>
             </ul>
         </div>
     </div>

@@ -41,12 +41,26 @@
     {% endfor %}
 
     <!-- Pagination -->
-    <div class="pagination">
-        <a href="#">«</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">»</a>
-    </div>
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">«</a>
+    {% else %}
+        <span class="disabled">«</span>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a href="?page={{ num }}" class="active">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">»</a>
+    {% else %}
+        <span class="disabled">»</span>
+    {% endif %}
+</div>
 </div>
 {% endblock %}

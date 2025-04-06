@@ -5,48 +5,64 @@
 
 {% block content %}
 <div class="search-result-descriptions">
-    <div class="back-btn"><p><a href="{% url 'main:home' %}">Back</a></p></div>
+    <div class="back-btn">
+        <p><a href="{% url 'main:home' %}">Back</a></p>
+    </div>
     <div class="results-description">Search results for '{{ query }}'</div>
 </div>
 
 <div class="results-column">
     {% if sellers %}
         {% for seller in sellers %}
-            <div class="item">
-                <!-- Display the social handle -->
-                <p class="social-handle" id="textToCopy">
-                    {{ seller.social_handles.0.handle }}
-                </p>
-                
-                <!-- Display product description -->
-                <div class="product-description">
-                    <i class="fas fa-shopping-bag"></i>
-                    <p>{{ seller.product_info.product_descriptions }}</p>
-                </div>
+            {% for social in seller.social_handles %}
+                <div class="item">
+                    <p class="social-handle" id="textToCopy-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                        {{ social.handle }}
+                    </p>
 
-                <!-- Display distance -->
-                <p class="distance">📍 {{ seller.distance }} km away</p><br>
+                    <div class="product-description">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p>{{ seller.product_info.product_descriptions }}</p>
+                    </div>
 
-                <div class="link-social">
-                    <button onclick="copyText()">Copy</button>
+                    <p class="distance">📍 {{ seller.distance }} km away</p><br>
 
-                    <!-- Loop through the social handles -->
-                    {% for social in seller.social_handles %}
+                    <div class="link-social">
+                        <button onclick="copyText('textToCopy-{{ forloop.parentloop.counter }}-{{ forloop.counter }}')">Copy</button>
+
                         <div class="social-infos">
                             <p>{{ social.social_category }}</p>
                             <div class="social-circle">
                                 <i class="fab fa-{{ social.social_category|lower }}"></i>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         {% endfor %}
     {% else %}
         <p>No results found for "{{ query }}".</p>
     {% endif %}
 </div>
 
+<!-- Pagination controls -->
+<div class="pagination">
+    <span class="page-links">
+        {% if sellers.has_previous %}
+            <a href="?query={{ query }}&page=1">First</a>
+            <a href="?query={{ query }}&page={{ sellers.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current-page">
+            Page {{ sellers.number }} of {{ sellers.paginator.num_pages }}
+        </span>
+
+        {% if sellers.has_next %}
+            <a href="?query={{ query }}&page={{ sellers.next_page_number }}">Next</a>
+            <a href="?query={{ query }}&page={{ sellers.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </span>
+</div>
+
 <script src="{% static 'main/js/copy_to_clipboard.js' %}"></script>
 {% endblock %}
-

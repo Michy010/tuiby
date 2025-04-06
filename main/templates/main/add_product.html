@@ -1,25 +1,41 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
 {% block title %} Add Product {% endblock %}
+
 {% block content %}
 <div class="add-product-form-container">
     <h2 class="add-product-h2">Add New Product</h2>
     <form method="POST">
         {% csrf_token %}
-        
+
+        <!-- Product Form -->
+        <h3>Product Information</h3>
         <div class="add-product-form-group">
             <label class="add-product-label">Product Name</label>
-            {{ form.product_name }}
+            {{ product_form.product_name }}
         </div>
 
         <div class="add-product-form-group">
             <label class="add-product-label">Product Description</label>
-            {{ form.product_descriptions }}
+            {{ product_form.product_descriptions }}
         </div>
 
         <div class="add-product-form-group">
             <label class="add-product-label">Category</label>
-            {{ form.product_category }}
+            {{ product_form.product_category }}
+        </div>
+
+        <!-- SocialInfo Form -->
+        <h3>Social Media Info</h3>
+        <div class="add-product-form-group">
+            <label class="add-product-label">Social Media Platform</label>
+            {{ social_form.social_category }}
+        </div>
+
+        <div class="add-product-form-group">
+            <label class="add-product-label">Handle</label>
+            {{ social_form.handle }}
         </div>
 
         <button type="submit" class="add-product-submit-btn">Add Product</button>

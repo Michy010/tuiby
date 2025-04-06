@@ -1130,3 +1130,32 @@ input, select, textarea {
             align-items: flex-start;
         }
     }
+
+
+/* PRODUCT LIST PAGINATION */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+}
+
+.pagination span.disabled {
+    color: #999;
+    pointer-events: none;
+}

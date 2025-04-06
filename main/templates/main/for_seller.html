@@ -10,13 +10,13 @@
                 <i class="fas fa-times close-icon" onclick="toggleSidebar()"></i>
             </div>
             <nav class="nav-links">
-                <a href="" class="nav-item">
+                <a href="{% url 'main:product-list' %}" class="nav-item">
                     <i class="fas fa-box icon"></i> <span>Products</span>
                 </a>
-                <a href="" class="nav-item">
+                <a href="{% url 'main:location-update' %}" class="nav-item">
                     <i class="fas fa-map-marker-alt icon"></i> <span>Location</span>
                 </a>
-                <a href="" class="nav-item">
+                <a href="{% url 'main:edit-profile' %}" class="nav-item">
                     <i class="fas fa-user icon"></i> <span>Profile</span>
                 </a>
             </nav>
@@ -27,7 +27,6 @@
             <div class="top-bar">
                 <i class="fas fa-bars menu-icon" id="toggleButton" onclick="toggleSidebar()"></i>
                 <h2>Dashboard</h2>
-                <button id="reset">reset</button>
             </div>
 
             <h1 class="title">{{user.username}}'s Dashboard</h1>
@@ -48,11 +47,6 @@
                     <p>Update your profile details.</p>
                     <button class="btn"><a href="{% url 'main:edit-profile' %}">Edit Profile</a></button>
                 </div>
-                <div class="card">
-                    <h2>Add your social media handles</h2>
-                    <p>Update your profile details and social links.</p>
-                    <button class="btn"><a href="{% url 'main:add-social-handle' %}">Add handles</a></button>
-                </div>
             </div>
         </div>
     </div>
@@ -68,9 +62,7 @@
                  make sure you do this when you're in your shop's location to get accurate coordinates.</li>
             <li>After adding your Shop's location, 
                 come back to your dashboard and 
-                go to social media handles add your social media handles </li>
-            <li>Then come back to your dashboard, 
-                enter to manage products add your products as much as you can.</li>
+                go to manage products, add your progucts and social media handles</li>
         </ol>
         <button id="close-popup">Got it</button>
     </div>
@@ -106,10 +98,6 @@
         ClosePopup.addEventListener('click', function() {
             Popup.classList.add('hidden')
             localStorage.setItem('PopupIsChecked', 'true')
-        })
-        reset.addEventListener('click', function() {
-            localStorage.removeItem('PopupIsChecked');
-            location.reload();
         })
     </script>
 {% endblock %}

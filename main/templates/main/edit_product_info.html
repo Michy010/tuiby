@@ -20,6 +20,15 @@
                 {% endif %}
             </div>
         {% endfor %}
+        {% for field in social_form %}
+            <div class="product-editing-form-field">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: red;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
         <button type="submit" class="editing-btn-save">Save Changes</button>
     </form>
 </div>
