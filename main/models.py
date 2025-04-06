@@ -30,7 +30,7 @@ class SocialInfo(models.Model):
     ]
     product_infos = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, default=1)
     social_category = models.CharField(max_length=10, choices=SOCIAL_CATEGORIES, default='Instagram')
-    handle = models.CharField(max_length=30, validators=[validate_handle_input], default='@Placeholder')
+    handle = models.CharField(max_length=30, validators=[validate_handle_input])
     
     def __str__(self):
         return self.handle
