@@ -10,7 +10,7 @@
         {% csrf_token %}
 
         <!-- Product Form -->
-        <h3>Product Information</h3>
+        <h3 style="margin-block:8px;">Product Information</h3>
         <div class="add-product-form-group">
             <label class="add-product-label">Product Name</label>
             {{ product_form.product_name }}
@@ -27,7 +27,7 @@
         </div>
 
         <!-- SocialInfo Form -->
-        <h3>Social Media Info</h3>
+        <h3 style="margin-block: 8px;">Social Media Info</h3>
         <div class="add-product-form-group">
             <label class="add-product-label">Social Media Platform</label>
             {{ social_form.social_category }}
@@ -36,6 +36,11 @@
         <div class="add-product-form-group">
             <label class="add-product-label">Handle</label>
             {{ social_form.handle }}
+            {% if social_form.handle.errors %}
+                {% for error in social_form.handle.errors %}
+                    <div style="color: red; margin-block: 4px;">{{error}}</div>
+                {% endfor%}
+            {% endif %}
         </div>
 
         <button type="submit" class="add-product-submit-btn">Add Product</button>

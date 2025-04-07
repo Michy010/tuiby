@@ -26,7 +26,8 @@ class SocialInfo(models.Model):
     SOCIAL_CATEGORIES = [
         ('Facebook', 'facebook'),
         ('Instagram', 'instagram'),
-        ('Ticktok', 'ticktok')
+        ('Tiktok', 'tiktok'),
+        ('Other', 'other')
     ]
     product_infos = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, default=1)
     social_category = models.CharField(max_length=10, choices=SOCIAL_CATEGORIES, default='Instagram')
@@ -41,4 +42,4 @@ class SellerLocation(models.Model):
     longitude = models.CharField(max_length=50)
 
     def __str__(self):
-        return 'Latitude is ${self.latitude} and Longitude is ${self.longitude}'
+        return f"Latitude is {self.latitude} and Longitude is {self.longitude}"

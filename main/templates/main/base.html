@@ -20,7 +20,7 @@
     <div class="menu-bar">
         <div class="logo">
             <img src="{% static 'main/images/tuiby-logo.png' %}" alt="logo image">
-            <p class="tuiby-paragraph">tuiby</p>
+            <p class="tuiby-paragraph"><b>tuiby</b></p>
         </div>
         <div class="hamburger" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
@@ -28,10 +28,12 @@
         <div class="menu-items" id="menu">
             <ul>
                 <li><a href="{% url 'main:home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
-                <li><a href="{% url 'main:buyer' %}" class="{% if request.path == '/buyer/' %}active{% endif %}">For buyer</a></li>
+                {% if user.is_superuser %}
+                <li><a href="{% url 'main:buyer' %}" class="{% if request.path == '/filter_sellers/' %}active{% endif %}">For buyer</a></li>
+                {% endif %}
                 <li><a href="{% url 'main:seller' %}" class="{% if request.path == '/seller/' %}active{% endif %}">For seller</a></li>
-                <li><a href="{%url 'main:faqs' %}" class="{% if request.path == 'faqs' %}active{% endif %}">FAQs</a></li>
-                <li><a href="{%url 'accounts:login' %}" class="{% if request.path == 'faqs' %}active{% endif %}">Sign In</a></li>
+                <li><a href="{%url 'main:faqs' %}" class="{% if request.path == '/faqs/' %}active{% endif %}">FAQs</a></li>
+                <li><a href="{%url 'accounts:login' %}" class="{% if request.path == '/accounts/login/' %}active{% endif %}">Sign In</a></li>
             </ul>
         </div>
     </div>
