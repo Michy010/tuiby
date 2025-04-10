@@ -18,7 +18,7 @@ def index(request):
 def filter_sellers(request):
     query = request.GET.get('query', '').strip()
     
-    # Try to get user location from request parameters
+    # Trying to get user location from request parameters
     try:
         user_latitude = float(request.GET.get('latitude', 0))
         user_longitude = float(request.GET.get('longitude', 0))
@@ -90,7 +90,7 @@ def update_location(request):
             )
             return redirect('main:product-list') 
     
-    return render(request, "main/SellerLocation.html")
+    return render(request, "main/sellerLocation.html")
 
 
 @login_required

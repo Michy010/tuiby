@@ -60,9 +60,10 @@ button a {
 }
 .menu-items ul li a {
     text-decoration: none;
+    color: #ffffff;
     font: 20px bolder;
 }
-.active {
+#active {
     color: tomato;
 }
 
@@ -90,7 +91,7 @@ button a {
         top: 95px;
         left: 0;
         width: 100%;
-        background-color: #add8e6;
+        background-color: #2c3e50;
         text-align: center;
     }
 
@@ -675,7 +676,7 @@ input[readonly] {
 .login-container {
     position: relative;
     text-align: center;
-    background: linear-gradient(to bottom, #87CEFA, #ffffff);
+    background: linear-gradient(to bottom, #2c3e50, #ffffff);
     padding: 40px;
     /* border-radius: 15px; */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -768,7 +769,7 @@ input[readonly] {
 .signup-container {
     position: relative;
     text-align: center;
-    background: linear-gradient(to bottom, #87CEFA, #ffffff);
+    background: #2c3e50;
     padding: 40px;
     /* border-radius: 15px; */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

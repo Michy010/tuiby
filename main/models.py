@@ -12,7 +12,8 @@ class ProductInfo(models.Model):
         ('Electronics', 'Electronics'),
         ('Fashion', 'Fashion'),
         ('Furniture', 'Furniture'),
-        ('Kitchenware', 'Kitchenware')
+        ('Kitchenware', 'Kitchenware'),
+        ('Other', 'other')
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=15)
@@ -27,7 +28,6 @@ class SocialInfo(models.Model):
         ('Facebook', 'facebook'),
         ('Instagram', 'instagram'),
         ('Tiktok', 'tiktok'),
-        ('Other', 'other')
     ]
     product_infos = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, default=1)
     social_category = models.CharField(max_length=10, choices=SOCIAL_CATEGORIES, default='Instagram')
