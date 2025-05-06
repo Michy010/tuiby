@@ -29,7 +29,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 env = environ.Env(
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
     DATABASE_URL=(str, 'sqlite:///db.sqlite3'),  # Fallback to SQLite if DATABASE_URL not set
 )
 
