@@ -2,25 +2,58 @@
 {% load static %}
 {% block title %} Home | Tuiby {% endblock %}
 {% block content %}
-<h1 class="main-header">Find Social Media Seller Near You!</h1>
-<div class="social-media-icon">
-    <div class="double-angle-quotation-mark"><i class="fas fa-angle-double-right gradient-icon"></i></div>
-    <div class="outer-circle"><div class="inner-circle"><i class="fab fa-tiktok"></i></div></div>
-    <div class="outer-circle"><div class="inner-circle"><i class="fab fa-facebook"></i></div></div>
-    <div class="outer-circle"><div class="inner-circle"><i class="fab fa-instagram"></i></div></div>
-</div><br>
-<!-- Corrected the button to properly trigger getLocation() -->
-<!-- <div class="access-location-btn">
-    <a href="javascript:void(0)" onclick="getLocation(event)">
-        <p>Allow location access</p>
-    </a>
-</div> -->
-<div class="search-bar">
-    <form id="searchForm" onsubmit="getUserLocationAndSearch(event)">
-        <input type="text" name="query" id="searchInput" placeholder="What are you looking for?" required>
-        <button type="submit"><i class="fas fa-search" style="color: white;"></i></button>
-    </form>
-</div>
-<div class="seller-register-link"><a href="{% url 'accounts:register' %}">Register as seller</a></div><br><br>
-<script src="{% static 'main/js/getlocation.js' %}"></script>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Active Sellers on Social Media</h1>
+            <p>Search by product, location, or platform — no more guessing usernames!</p>
+            <!-- Search Form -->
+            <form class="search-form" id="searchForm">
+                {% csrf_token %}
+                <div class="search-grid">
+                    <div class="form-group">
+                        <select id="platform">
+                            <option value="all">All Platforms</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="tiktok">TikTok</option>
+                            <option value="facebook">Facebook</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="searchTerm" placeholder="What are you looking for?">
+                        <input type="hidden" id="latitude">
+                        <input type="hidden" id="longitude">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="location" placeholder="Location (e.g.Dar es Salaam)">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <button type="submit" onclick="getLocation()" class="btn btn-primary">Find Sellers</button>
+                </div>
+            </form>
+            <div class="seller-cta">
+                <p>Are you a seller? <a href="{% url 'main:seller' %}">Register your account <i class="fas fa-user-plus"></i></a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="trust-badges">
+        <div class="container">
+            <div class="badge">
+                <div class="badge-number">1,000+</div>
+                <div class="badge-text">Active Sellers</div>
+            </div>
+            <div class="badge">
+                <div class="badge-number">3</div>
+                <div class="badge-text">Platforms Supported</div>
+            </div>
+            <div class="badge">
+                <div class="badge-icon">🔒</div>
+                <div class="badge-text">No Transactions - Just Connections</div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'main/js/display_results.js' %}"></script>
 {% endblock %}

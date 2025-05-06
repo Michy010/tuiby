@@ -4,7 +4,7 @@ from .models import ProductInfo, SocialInfo, SellerLocation
 class ProductForm(forms.ModelForm):
     class Meta:
         model = ProductInfo
-        fields = ['product_name', 'product_descriptions', 'product_category']
+        fields = ['product_name', 'product_descriptions']
         # widgets = {
         #     'product_name': forms.TextInput(attrs={'class': 'input-field', 'placeholder': 'Enter product name'}),
         #     'product_descriptions': forms.Textarea(attrs={'class': 'input-field textarea', 'placeholder': 'Enter product description'}),

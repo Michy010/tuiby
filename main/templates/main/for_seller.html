@@ -2,102 +2,108 @@
 {% load static %}
 {% block title %} Seller Dashboard {% endblock %}
 {% block content %}
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>Seller Panel</h2>
-                <i class="fas fa-times close-icon" onclick="toggleSidebar()"></i>
+<!-- Seller Hero -->
+<section class="seller-hero">
+    <div class="container">
+        <h1>Grow Your Social Media Business</h1>
+        <p>Get discovered by more buyers looking for what you sell</p>
+    </div>
+</section>
+<!-- Benefits Section -->
+<section class="benefits">
+    <div class="container">
+        <h2>Why Join Tuiby?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>More Visibility</h3>
+                <p>Be found by buyers searching specifically for your products.</p>
             </div>
-            <nav class="nav-links">
-                <a href="{% url 'main:edit-profile' %}" class="nav-item">
-                    <i class="fas fa-user icon"></i> <span>Profile</span>
-                </a>
-                <a href="{% url 'main:product-list' %}" class="nav-item">
-                    <i class="fas fa-box icon"></i> <span>Products</span>
-                </a>
-                <a href="{% url 'main:location-update' %}" class="nav-item">
-                    <i class="fas fa-map-marker-alt icon"></i> <span>Location</span>
-                </a>
-            </nav>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content" id="main-content">
-            <div class="top-bar">
-                <i class="fas fa-bars menu-icon" id="toggleButton" onclick="toggleSidebar()"></i>
-                <h2>Dashboard</h2>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Local Customers</h3>
+                <p>Connect with buyers in your area for faster deliveries.</p>
             </div>
-
-            <h1 class="title">{{user.username}}'s Dashboard</h1>
-
-            <div class="cards-container">
-                <div class="card">
-                    <h2>Manage Products</h2>
-                    <p>Add, update, or remove products from your store.</p>
-                    <button class="btn"><a href="{% url 'main:product-list' %}">Go to Products</a></button>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-sync-alt"></i>
                 </div>
-                <div class="card">
-                    <h2>Update Location</h2>
-                    <p>Set your selling location for better visibility.</p>
-                    <button class="btn"><a href="{% url 'main:location-update' %}">Update Location</a></button>
-                </div>
-                <div class="card">
-                    <h2>Edit Profile</h2>
-                    <p>Update your profile details.</p>
-                    <button class="btn"><a href="{% url 'main:edit-profile' %}">Edit Profile</a></button>
-                </div>
+                <h3>Active Listings</h3>
+                <p>Only active sellers are shown to buyers.</p>
             </div>
         </div>
     </div>
+</section>
+<!-- Registration Section -->
+<section class="registration">
+    <div class="container">
+        <div class="registration-grid">
+            <div class="registration-info">
+                <h2>Ready to Get Started?</h2>
+                <p>Register your seller account in just a few minutes and start reaching more
+                    customers today.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Free to list your products</li>
+                    <li><i class="fas fa-check"></i> Update anytime</li>
+                    <li><i class="fas fa-check"></i> No transaction fees</li>
+                </ul>
+            </div>
+            <div class="registration-form">
+                <h3>Create Seller Account</h3>
+                <form method="post" action="{% url 'accounts:register' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Full Name</label>
+                        <input type="text" placeholder="Enter your name Eg. John Doe" name="full_name" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" placeholder="Enter your email Eg. someone@gmail.com" name="email" required>
+                    </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div style="color: red;">{{message}}</div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="id_password1">Password</label>
+                        <input type="password" placeholder="Enter your password Eg. Abcd@123" name="password" required>
+                    </div>
+                    {% if register_form.password1.errors %}
+                           <ul>
+                               {% for error in register_form.password1.errors %}
+                                   <li style="color: red;">{{ error }}</li>
+                               {% endfor %}
+                           </ul>
+                    {% endif %}
 
-    <div class="popup-message" id="popup">
-        <p class="greetings-paragraph">Hello! <b>{{ user.username }}</b></p>
-        <p>Thank you for registering in <b>tuiby</b>, you are welcome to
-             increase your business visibility in social medias.</p>
-        <p><em>Before you proceed we would like you to complete your account set up, follow the steps below..</em></p>
-        <ol>
-            <li>Go to update location in your dashboard to
-                 add your shop's location, 
-                 make sure you do this when you're in your shop's location to get accurate coordinates.</li>
-            <li>After adding your Shop's location, 
-                come back to your dashboard and 
-                go to manage products, add your products and social media handles</li>
-        </ol>
-        <button id="close-popup">Got it</button>
+                    <!-- <div class="form-group">
+                        <label for="id_password2">Confirm Password</label>
+                        {{ register_form.password2}}
+                    </div> -->
+                    {% if register_form.password2.errors %}
+                           <ul>
+                               {% for error in register_form.password2.errors %}
+                                   <li style="color: red;">{{ error }}</li>
+                               {% endfor %}
+                           </ul>
+                    {% endif %}
+                    <!-- <div class="form-group">
+                        <label for="sellerLocation">Location</label>
+                        <input type="text" id="sellerLocation" required>
+                    </div> -->
+                    <button type="submit" class="btn btn-primary">Register Now</button>
+                    <p class="login-link">Already have an account? <a href="{% url 'accounts:login' %}">Log
+                            in here</a></p>
+                </form>
+            </div>
+        </div>
     </div>
+</section>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            const toggleButton = document.getElementById("toggleButton");
-    
-            sidebar.classList.add("show");
-            toggleButton.style.display = "none";
-        }
-    
-        document.querySelector(".close-icon").addEventListener("click", function () {
-            const sidebar = document.getElementById("sidebar");
-            const toggleButton = document.getElementById("toggleButton");
-    
-            sidebar.classList.remove("show");
-            toggleButton.style.display = "inline-block";
-        });
-    </script>
-    
-    <script>
-        let Popup = document.getElementById('popup')
-        let ClosePopup = document.getElementById('close-popup')
-        let reset = document.getElementById('reset')
-
-        if(localStorage.getItem('PopupIsChecked')) {
-            Popup.classList.add('hidden')
-        } else {
-            Popup.classList.remove('hidden')
-        }
-        ClosePopup.addEventListener('click', function() {
-            Popup.classList.add('hidden')
-            localStorage.setItem('PopupIsChecked', 'true')
-        })
-    </script>
 {% endblock %}

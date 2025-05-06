@@ -11,34 +11,39 @@
     <div class="results-description">Search results for '{{ query }}'</div>
 </div>
 
-<div class="results-column">
+<div class="results" id="resultsSection">
+    <input type="hidden" id="csrf_token_input" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
     {% if sellers %}
         {% for seller in sellers %}
-            {% for social in seller.social_handles %}
-                <div class="item">
-                    <p class="social-handle" id="textToCopy-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-                        {{ social.handle }}
-                    </p>
-
-                    <div class="product-description">
-                        <i class="fas fa-shopping-bag"></i>
-                        <p>{{ seller.product_info.product_descriptions }}</p>
-                    </div>
-
-                    <p class="distance">📍 {{ seller.distance }} km away</p><br>
-
-                    <div class="link-social">
-                        <button onclick="copyText('textToCopy-{{ forloop.parentloop.counter }}-{{ forloop.counter }}')">Copy</button>
-
-                        <div class="social-infos">
-                            <p>{{ social.social_category }}</p>
-                            <div class="social-circle">
-                                <i class="fab fa-{{ social.social_category|lower }}"></i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card">
+                <div class="header">
+                    <i class="fab fa-{{ seller.social.social_category|lower }} {{ seller.social.social_category|lower }}-icon"></i>
+                    <span class="handle" id="textToCopy-{{ forloop.counter }}">
+                        {{ seller.social.handle }}
+                    </span>
                 </div>
-            {% endfor %}
+
+                <p class="description">{{ seller.product_info.product_descriptions }}</p>
+
+                <div class="status">
+                    <span class="dot"></span>
+                    <span class="active-text">Active</span>
+                </div>
+
+                <div class="tags">
+                    <span class="tag">{{ seller.product_info.business_profile.product_category }}</span>
+                </div>
+
+                <div class="location">
+                    <i class="fas fa-location-dot"></i>
+                    <span>{{ seller.distance }} km away . Dar es salaam</span>
+                </div>
+
+                <button class="copy-btn" onclick="copyText('textToCopy-{{ forloop.counter }}'); getHandleId('{{ seller.user.id }}')">
+                    <i class="fas fa-copy"></i> Copy Handle
+                </button>
+            </div>
         {% endfor %}
     {% else %}
         <p>No results found for "{{ query }}".</p>
@@ -65,4 +70,5 @@
 </div>
 
 <script src="{% static 'main/js/copy_to_clipboard.js' %}"></script>
+<script src="{% static 'main/js/statistics_counts.js' %}"></script>
 {% endblock %}

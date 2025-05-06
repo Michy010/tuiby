@@ -11,6 +11,10 @@ urlpatterns = [
     path('filter_sellers/', views.filter_sellers, name='buyer'),
     path('seller/',views.for_seller, name='seller'),
     path('faqs/', views.faqs_views, name='faqs'),
+    path('seller-panel/', views.seller_panel, name='seller-panel'),
+
+    # Social infos 
+    # path('add-social-handle/', views.socialView, name='add-social-handle'),
 
     # Location related urls
     path('update-location/', views.update_location, name = 'location-update'),
@@ -26,4 +30,6 @@ urlpatterns = [
 
     # EDIT URLS
     path('edit-product/product/<int:pk>/', views.edit_product_info, name='edit-product'),
+
+    path('update-statistics/', views.update_statistics, name='update-statistics'),
 ]

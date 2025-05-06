@@ -1,0 +1,338 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/main.css'  %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Document</title>
+</head>
+    <body class="seller-dashboard">
+        <!-- Seller Header -->
+        <header class="seller-header">
+            <div class="container">
+                <div class="logo">
+                    <span class="at-symbol">@</span>
+                    <span class="logo-text">tuiby</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'main:home' %}">Home</a></li>
+                        <li><a href="{% url 'accounts:logout' %}" class="">Logout <i class="fas fa-sign-out-alt"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    
+        <!-- Seller Dashboard -->
+        <div class="seller-dashboard-container">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div class="seller-dasboard-last-update">
+                        <h1>Seller Dashboard</h1>
+                        <p class="last-updated">Last updated: <span id="lastUpdated">Today</span></p>
+                    </div>
+                    <div class="status-badge active">
+                        <i class="fas fa-circle"></i> Active
+                    </div>
+                </div>
+    
+                <div class="dashboard-grid">
+                    <!-- Sidebar -->
+                    <aside class="dashboard-sidebar">
+                        <div class="seller-profile-summary">
+                            <div class="profile-image-container">
+                                <img src="{% static 'main/images/image.png' %}" alt="Profile" id="profileImage">
+                                <!-- <button class="change-image-btn">Change</button> -->
+                            </div>
+                            <h3 id="sellerNameDisplay">{{user.full_name}}</h3>
+                            <p class="seller-email" id="sellerEmailDisplay">{{user.email}}</p>
+                            <p class="seller-location"><i class="fas fa-map-marker-alt"></i> <span
+                                    id="sellerLocationDisplay"></span></p>
+                            <div class="profile-completion">
+                                <div class="completion-bar">
+                                    <div class="completion-fill" style="width: 80%;"></div>
+                                </div>
+                                <p>Profile 80% complete</p>
+                            </div>
+                        </div>
+    
+                        <div class="dashboard-nav">
+                            <ul>
+                                <li class="{% if request.path == '/seller-panel/?#profile' %} active {% endif %}"><a href="#profile"><i class="fas fa-user"></i>
+                                        Profile</a></li>
+                                <li class="{% if request.path == '/seller-panel/?#products' %} active {% endif %}"><a href="#products"><i class="fas fa-box-open"></i> Products</a></li>
+                                <li class="{% if request.path == '/seller-panel/?#statistics' %} active {% endif %}"><a href="#statistics"><i class="fas fa-chart-line"></i> Statistics</a></li>
+                                <li class="{% if request.path == '/seller-panel/?#settings' %} active {% endif %}"><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                            </ul>
+                        </div>
+                    </aside>
+    
+<!-- Main Content -->
+<main class="dashboard-main">
+    <!-- Profile Section -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="message-success">{{message}}</div>
+        {% endfor %}
+    {% endif %}
+<section id="profile" class="dashboard-section active">
+    <h2><i class="fas fa-user"></i> Profile Information</h2>
+    <form method="post" action="{% url 'main:edit-profile' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">
+                <label for="sellerName">Full Name</label>
+                <input type="text" id="sellerName" name="full_name" value="{{user.full_name}}">
+            </div>
+            <div class="form-group">
+                <label for="businessName">Business Name (Optional)</label>
+                <input type="text" id="businessName" name="business_name"
+                value="{% if products %}{{ products.0.business_profile.business_name }}{% endif %}"
+                placeholder="Add your business name eg M6outfits shop">
+            </div>
+            <div class="form-group">
+                <label for="seller-Location">Location</label>
+                <input type="text" id="seller-Location" name="location" readonly>
+                <button type="button" onclick="getLocation()" class="btn btn-primary">Get Location</button>
+                <input type="text" id="latitude" name="latitude" hidden>
+                <input type="text" id="longitude" name="longitude" hidden>
+            </div>                                    
+        </div>
+
+        <div class="form-group">
+            <label for="sellerDescription">Business Description</label>
+            <textarea id="sellerDescription" rows="4" name="business_descriptions"
+                placeholder="Add your business description" maxlength="300">
+                {% if products %}
+                    {{ products.0.business_profile.business_descriptions }}
+                {% endif %}
+            </textarea>
+        </div>        
+
+        <div class="form-row">
+            
+        </div>
+
+        <h2>Social Media Handles</h2>
+        <div class="social-handles">
+            <div class="handle-input">
+                <div class="platform-select">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </div>
+                <input class="social-input" id="instagram" name="instagram" type="text"
+                    value="{% for social in social %}{% if social.social_category == 'Instagram' %} {{ social.handle }} {% endif %}{% endfor %}"
+                    placeholder="handle name eg @janes_crafts" maxlength="15">
+
+            </div>
+            
+            <div class="handle-input">
+                <div class="platform-select">
+                    <i class="fab fa-facebook"></i>
+                    <span>Facebook</span>
+                </div>
+                <input class="social-input" id="facebook" name="facebook" type="text" 
+                    value="{% for social in social %}{% if social.social_category == 'Facebook' %} {{ social.handle }} {% endif %}{% endfor %}"
+                    placeholder="facebook handle eg @doefashion">
+            </div>
+            <div class="handle-input">
+                <div class="platform-select">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
+                </div>
+                <input class="social-input" id="tiktok" type="text" name="tiktok" 
+                    value="{% for social in social %}{% if social.social_category == 'Tiktok' %} {{ social.handle }} {% endif %} {% endfor %}"
+                    placeholder="tiktok handle eg @nazrat">
+            </div>
+        </div>
+       
+
+        <div class="form-actions">
+            <button class="btn btn-primary" id="save-profile" type="submit">Save Changes</button>
+        </div>
+    </form>
+</section>
+    
+<!-- Products Section -->
+<section id="products" class="dashboard-section">
+    <h2><i class="fas fa-box-open"></i> Your Products</h2>
+    <p>Add product details of the items you sell on social media</p>
+
+    {% for product in products %}
+    <div class="products-list">
+        <!-- Product Card -->
+        <div class="product-card">
+            <div class="product-header">
+                <h3>{{product.product_name}}</h3>
+                <div class="product-actions">
+                    <button class="btn-edit"><a href="{% url 'main:edit-product' product.id %}"><i class="fas fa-edit"></i></a></i></button>
+                    <button class="btn-delete"><a href="{% url 'main:delete-product' product.id %}"><i style="color: red;" class="fas fa-trash"></i></a></button>
+                </div>
+            </div>
+
+            <div class="product-details">
+                <p><strong>Description:</strong>{{product.product_descriptions}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+<!-- Add New Product Form -->
+<div class="add-product-form">
+    <h3>Add New Product</h3>
+    <form method="post" action="{% url 'main:add_product' %}" id="newProductForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" name="name" id="productName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="productDescription">Description</label>
+            <textarea id="productDescription" name="description" rows="3" maxlength="100" required></textarea>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Add Product</button>
+         </div>
+    </form>
+</div>
+</section>
+
+
+<!-- Statistics Section -->
+<section id="statistics" class="dashboard-section">
+    <h2 class="section-title">
+        <i class="fas fa-chart-line"></i> Your Statistics
+    </h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Appearence in search results</div>
+            <div class="stat-value" id="searchResults">{{ current_appear }}</div>
+            <div class="stat-change {% if diff_appear > 0 %}positive{% elif diff_appear < 0 %}negative{% else %}neutral{% endif %}">
+                {% if diff_appear > 0 %}+{{ diff_appear }} from last week
+                {% elif diff_appear < 0 %}{{ diff_appear }} from last week
+                {% else %}No change
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">Copied Handles</div>
+            <div class="stat-value" id="copiedtimes">{{ current_copied }}</div>
+            <div class="stat-change {% if diff_copied > 0 %}positive{% elif diff_copied < 0 %}negative{% else %}neutral{% endif %}">
+                {% if diff_copied > 0 %}+{{ diff_copied }} from last week
+                {% elif diff_copied < 0 %}{{ diff_copied }} from last week
+                {% else %}No change
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-value" id="newCustomer">3</div>
+            <div class="stat-label">New Customers</div>
+            <div class="stat-change neutral">No change</div>
+        </div>
+    </div>
+
+    <div class="stats-chart">
+        <h3 class="chart-title">Engagement Breakdown</h3>
+        <canvas id="engagementPieChart" width="400" height="400"></canvas>
+    </div>    
+</section>
+
+<!-- Settings Section -->
+<section id="settings" class="dashboard-section">
+    <h2><i class="fas fa-cog"></i> Account Settings</h2>
+
+    <div class="settings-grid">
+        <div class="settings-card">
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <div class="setting-item">
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+                <span>Email notifications</span>
+            </div>
+            <div class="setting-item">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+                <span>SMS notifications</span>
+            </div>
+        </div>
+
+        <!-- <div class="settings-card">
+            <h3><i class="fas fa-eye"></i> Visibility</h3>
+            <div class="setting-item">
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+                <span>Public profile</span>
+            </div>
+            <div class="setting-item">
+                <p>Profile will automatically hide after 30 days of inactivity</p>
+            </div>
+        </div> -->
+
+        <div class="settings-card danger">
+            <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+            <button class="btn btn-danger">
+                <i class="fas fa-trash"></i> Delete Account
+            </button>
+            <p class="small">This action cannot be undone</p>
+        </div>
+    </div>
+</section>
+</main>
+</div>
+</div>
+</div>
+
+
+        <script>
+            const searchResults = document.getElementById('searchResults').textContent;
+            const copiedTimes = document.getElementById('copiedtimes').textContent;
+            const ctx = document.getElementById('engagementPieChart').getContext('2d');
+            const engagementPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Search Appearence', 'Copied Handles', 'New Customers'],
+                    datasets: [{
+                        data: [searchResults, copiedTimes, 3],
+                        backgroundColor: [
+                            '#3B82F6', // Blue
+                            '#10B981', // Green
+                            '#F59E0B'  // Yellow
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'User Engagement Distribution'
+                        }
+                    }
+                }
+            });
+        </script>        
+    
+    <script src="{% static 'main/js/seller_panel_navigate_tabs.js' %}"></script>
+    <script src="{% static 'main/js/user_profile.js' %}"></script>
+    <script src="{% static 'main/js/sellerlocation.js' %}"></script>
+    </body>
+</html>

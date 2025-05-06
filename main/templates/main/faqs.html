@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} FAQS {% endblock %}
+{% block content %}
+    <!-- FAQs Hero -->
+    <section class="faq-hero">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about Tuiby</p>
+        </div>
+    </section>
+    <!-- FAQs Content -->
+    <section class="faq-content">
+        <div class="container">
+            <div class="faq-tabs">
+                <button class="tab-btn active" data-tab="buyers">For Buyers</button>
+                <button class="tab-btn" data-tab="sellers">For Sellers</button>
+            </div>
+            <div class="faq-accordion" id="buyers-faq">
+                <div class="accordion-item">
+                    <button class="accordion-btn">
+                        <span>How do I search for sellers?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Use the search bar on the homepage to enter what you're looking for. You
+                            can filter by platform (Instagram, TikTok, Facebook), product type, and location to find the
+                            most
+                            relevant sellers.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">
+                        <span>Is Tuiby free to use for buyers?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Yes! Tuiby is completely free for buyers. We don't charge any fees for
+                            searching or connecting with sellers.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">
+                        <span>How do I know if a seller is active?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Each seller profile shows when they were last active. Sellers who don't
+                            update their profile for 30 days are automatically marked as inactive.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-accordion" id="sellers-faq" style="display: none;">
+                <div class="accordion-item">
+                    <button class="accordion-btn">
+                        <span>How do I register as a seller?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Click on "For Sellers" in the navigation menu and then "Register your
+                            account". Fill out the simple form with your details and social media handles.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">
+                        <span>How often should I update my profile?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>To keep your profile active, you should update it at least once every 30 days.
+                            We'll send you reminders when it's time to update.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">
+                        <span>Can I list products from multiple platforms?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Yes! You can add your handles from Instagram, TikTok, and Facebook, and
+                            list different products for each platform if needed.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-contact">
+                <h3>Still have questions?</h3>
+                <p>Contact us at <a href="mailto:help@tuiby.com">help@tuiby.com</a> and we'll be
+                    happy to help!</p>
+            </div>
+        </div>
+    </section>
+        
+    <script src="{% static 'main/js/faqs_tabs_switching.js' %}"></script>
+{% endblock %}

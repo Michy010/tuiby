@@ -29,8 +29,9 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function (position) {
-                        document.getElementById("latitude").value = position.coords.latitude;
-                        document.getElementById("longitude").value = position.coords.longitude;
+                        let lat = document.getElementById("latitude").value = position.coords.latitude;
+                        let lon = document.getElementById("longitude").value = position.coords.longitude;
+                        document.getElementById('sellerLocationDisplay').textContent = getLocationName(lat, lon);
                         document.getElementById("save-btn").disabled = false;
                     },
                     function (error) {
@@ -39,6 +40,15 @@
                 );
             } else {
                 alert("Geolocation is not supported by this browser.");
+            }
+            function getLocationName(lat, lon) {
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    let city = data.address.city || data.address.town || data.address.village || data.address.municipality || 'City not found'
+                    console.log('Location name:', city);
+                })
+                .catch(error => console.error('Error:', error));
             }
         }
     </script>
