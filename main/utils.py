@@ -1,4 +1,5 @@
 from math import radians, cos, sin, asin, sqrt, atan, tan, atan2
+from . models import SocialInfo, BusinessProfile
 
 # The Haversine method to calculate the difference in distance
 def haversine(lon1, lat1, lon2, lat2):
@@ -75,3 +76,23 @@ def vincenty_distance(lon1, lat1, lon2, lat2):
 
     distance = b * A * (sigma - delta_sigma)  # Distance in meters
     return distance / 1000  # Convert to kilometers
+
+
+
+def get_profile_completion(user):
+    percentage = 0
+
+    has_full_name = bool(user.full_name)
+    has_location = user.sellerlocation.exists()
+    has_social = SocialInfo.objects.filter(user=user).exists()
+    has_business = BusinessProfile.objects.filter(user=user).exists()
+
+    if has_full_name and has_social:
+        percentage = 50
+    if has_full_name and has_social and has_location:
+        percentage = 80
+    if has_full_name and has_social and has_location and has_business:
+        percentage = 100
+
+    return percentage
+

@@ -17,14 +17,13 @@ urlpatterns = [
     # path('add-social-handle/', views.socialView, name='add-social-handle'),
 
     # Location related urls
-    path('update-location/', views.update_location, name = 'location-update'),
+    # path('update-location/', views.update_location, name = 'location-update'),
 
     # Profile related urls
     path('edit-profile/', views.edit_profile, name='edit-profile'),
 
     # Product related urls
-    path('product-list/', views.product_list, name='product-list'),
-    path('update-product/', views.update_product_view, name='update-product'),
+    # path('update-product/', views.update_product_view, name='update-product'),
     path('add-product/', views.add_product, name='add_product'),
     path('delete-product/<int:pk>/', views.delete_product, name='delete-product'),
 

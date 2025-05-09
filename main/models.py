@@ -38,13 +38,15 @@ class SocialInfo(models.Model):
         ('Instagram', 'instagram'),
         ('Tiktok', 'tiktok'),
     ]
-    product_infos = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, related_name='product_info', default=1)
+
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     social_category = models.CharField(max_length=50, choices=SOCIAL_CATEGORIES, default='Instagram')
     handle = models.CharField(max_length=100, validators=[validate_handle_input])
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    
+    product_infos = models.ManyToManyField(ProductInfo, related_name='social_handles', blank=True)
+
     def __str__(self):
         return self.handle
+
     
 class SellerLocation(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sellerlocation')

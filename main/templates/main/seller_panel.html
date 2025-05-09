@@ -18,6 +18,9 @@
                     <span class="at-symbol">@</span>
                     <span class="logo-text">tuiby</span>
                 </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
                 <nav>
                     <ul>
                         <li><a href="{% url 'main:home' %}">Home</a></li>
@@ -33,7 +36,7 @@
                 <div class="dashboard-header">
                     <div class="seller-dasboard-last-update">
                         <h1>Seller Dashboard</h1>
-                        <p class="last-updated">Last updated: <span id="lastUpdated">Today</span></p>
+                        <!-- <p class="last-updated">Last updated: <span id="lastUpdated">Today</span></p> -->
                     </div>
                     <div class="status-badge active">
                         <i class="fas fa-circle"></i> Active
@@ -50,14 +53,25 @@
                             </div>
                             <h3 id="sellerNameDisplay">{{user.full_name}}</h3>
                             <p class="seller-email" id="sellerEmailDisplay">{{user.email}}</p>
-                            <p class="seller-location"><i class="fas fa-map-marker-alt"></i> <span
-                                    id="sellerLocationDisplay"></span></p>
+                            {% if location %}
+                            <p class="seller-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ location.location }}</span>
+                            </p>
+                            {% endif %}
+
                             <div class="profile-completion">
                                 <div class="completion-bar">
-                                    <div class="completion-fill" style="width: 80%;"></div>
+                                    <div class="completion-fill 
+                                        {% if completion == 50 %}fill-50
+                                        {% elif completion == 80 %}fill-80
+                                        {% elif completion == 100 %}fill-100
+                                        {% endif %}">
+                                    </div>
                                 </div>
-                                <p>Profile 80% complete</p>
+                                <p>Profile {{ completion }}% complete</p>
                             </div>
+                            
                         </div>
     
                         <div class="dashboard-nav">
@@ -100,7 +114,18 @@
                 <button type="button" onclick="getLocation()" class="btn btn-primary">Get Location</button>
                 <input type="text" id="latitude" name="latitude" hidden>
                 <input type="text" id="longitude" name="longitude" hidden>
-            </div>                                    
+            </div>
+            <div class="form-group">
+                <label for="product-category">Product Category</label>
+                <select id="product-category" name="product_category" class="form-control" required>
+                    <option value="">-- Select a Category --</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Handmade">Handmade</option>
+                    <option value="Home Goods">Home Goods</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>                                                
         </div>
 
         <div class="form-group">
@@ -126,7 +151,7 @@
                 </div>
                 <input class="social-input" id="instagram" name="instagram" type="text"
                     value="{% for social in social %}{% if social.social_category == 'Instagram' %} {{ social.handle }} {% endif %}{% endfor %}"
-                    placeholder="handle name eg @janes_crafts" maxlength="15">
+                    placeholder="handle name eg @janes_crafts" maxlength="100">
 
             </div>
             
@@ -135,7 +160,7 @@
                     <i class="fab fa-facebook"></i>
                     <span>Facebook</span>
                 </div>
-                <input class="social-input" id="facebook" name="facebook" type="text" 
+                <input class="social-input" id="facebook" name="facebook" type="text" maxlength="100"
                     value="{% for social in social %}{% if social.social_category == 'Facebook' %} {{ social.handle }} {% endif %}{% endfor %}"
                     placeholder="facebook handle eg @doefashion">
             </div>
@@ -144,7 +169,7 @@
                     <i class="fab fa-tiktok"></i>
                     <span>TikTok</span>
                 </div>
-                <input class="social-input" id="tiktok" type="text" name="tiktok" 
+                <input class="social-input" id="tiktok" type="text" name="tiktok" maxlength="100"
                     value="{% for social in social %}{% if social.social_category == 'Tiktok' %} {{ social.handle }} {% endif %} {% endfor %}"
                     placeholder="tiktok handle eg @nazrat">
             </div>
@@ -188,7 +213,7 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="productName">Product Name</label>
-            <input type="text" name="name" id="productName" required>
+            <input type="text" name="name" id="productName" maxlength="15" required>
         </div>
 
         <div class="form-group">
@@ -233,7 +258,6 @@
         </div>
 
         <div class="stat-card">
-            <div class="stat-value" id="newCustomer">3</div>
             <div class="stat-label">New Customers</div>
             <div class="stat-change neutral">No change</div>
         </div>
@@ -334,5 +358,6 @@
     <script src="{% static 'main/js/seller_panel_navigate_tabs.js' %}"></script>
     <script src="{% static 'main/js/user_profile.js' %}"></script>
     <script src="{% static 'main/js/sellerlocation.js' %}"></script>
+    <script src="{% static 'main/js/hamburger-menu.js' %}"></script>
     </body>
 </html>

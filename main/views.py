@@ -2,10 +2,10 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q , Sum
+from django.db.models import Q , Sum,F
 from .models import SellerLocation, SocialInfo, ProductInfo, BusinessProfile, Statistic
 from accounts.models import CustomUser
-from .utils import vincenty_distance  
+from .utils import vincenty_distance, get_profile_completion
 from django.shortcuts import render, redirect, get_object_or_404, redirect
 from django.contrib import messages
 from .forms import ProductForm, SocialInfoForm, SellerLocationForm
@@ -27,7 +27,11 @@ def filter_sellers(request):
         user_latitude = float(request.GET.get('latitude', 0))
         user_longitude = float(request.GET.get('longitude', 0))
     except ValueError:
-        return render(request, 'main/for_buyer.html', {"sellers": [], "query": query, "error": "Invalid location data."})
+        return render(request, 'main/for_buyer.html', {
+            "sellers": [],
+            "query": query,
+            "error": "Invalid location data."
+        })
 
     flattened_sellers = []
 
@@ -39,39 +43,38 @@ def filter_sellers(request):
             seller_lon = float(seller.longitude)
             distance = vincenty_distance(user_latitude, user_longitude, seller_lat, seller_lon)
 
-            # Filter social handles first
-            social_filter = Q(user=seller.user)
+            # Get all social handles for the seller
+            all_socials = SocialInfo.objects.filter(user=seller.user)
+
             if platform and platform != "all":
-                social_filter &= Q(social_category__iexact=platform)
+                all_socials = all_socials.filter(social_category__iexact=platform)
 
-            social_handles = SocialInfo.objects.filter(social_filter)
+            for social in all_socials:
+                linked_products = social.product_infos.all()
 
-            for social in social_handles:
-                product_info = social.product_infos
-
-                # Apply product name/description filter
+                # Filter products by query
                 if query:
-                    if query.lower() not in product_info.product_name.lower() and \
-                       query.lower() not in product_info.product_descriptions.lower():
+                    linked_products = linked_products.filter(
+                        Q(product_name__icontains=query) |
+                        Q(product_descriptions__icontains=query)
+                    )
+
+                for product in linked_products:
+                    # Location filter
+                    if location and location.lower() not in seller.location.lower():
                         continue
 
-                # Apply location filter
-                if location and location.lower() not in seller.location.lower():
-                    continue
+                    # Track stats
+                    today = date.today()
+                    stat, _ = Statistic.objects.get_or_create(user=seller.user, date_time=today)
+                    Statistic.objects.filter(id=stat.id).update(appearence_count=F('appearence_count') + 1)
 
-                # Track statistics
-                today = date.today()
-                stat, _ = Statistic.objects.get_or_create(user=seller.user, date_time=today)
-                stat.appearence_count += 1
-                stat.save()
-
-                # Append data
-                flattened_sellers.append({
-                    "user": seller.user,
-                    "distance": round(distance, 2),
-                    "product_info": product_info,
-                    "social": social
-                })
+                    flattened_sellers.append({
+                        "user": seller.user,
+                        "distance": round(distance, 2),
+                        "product_info": product,
+                        "social": social
+                    })
 
         except ValueError:
             continue
@@ -79,7 +82,7 @@ def filter_sellers(request):
     # Sort by distance
     flattened_sellers = sorted(flattened_sellers, key=lambda x: x["distance"])
 
-    # Pagination
+    # Paginate
     paginator = Paginator(flattened_sellers, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -88,6 +91,7 @@ def filter_sellers(request):
         "sellers": page_obj,
         "query": query,
     })
+
 
 def for_seller(request):
     return render (request, 'main/for_seller.html')
@@ -115,13 +119,19 @@ def seller_panel(request):
     diff_appear = current_appear - previous_appear
     diff_copied = current_copied - previous_copied
 
+    completion = get_profile_completion(request.user)
+
+    location = user.sellerlocation.first()
+
     context = {
+        'completion':completion,
         'current_appear': current_appear,
         'current_copied': current_copied,
         'diff_appear': diff_appear,
         'diff_copied': diff_copied,
         'products':products,
-        'social':handle
+        'social':handle,
+        'location':location,
 
     }
     return render(request, 'main/seller_panel.html', context)
@@ -130,24 +140,13 @@ def seller_panel(request):
 def faqs_views(request):
     return render(request, 'main/faqs.html')
 
-def update_location(request):
-    if request.method == "POST":
-        latitude = request.POST.get("latitude")
-        longitude = request.POST.get("longitude")
-        location = request.POST.get('location')
-        
-        if latitude and longitude:
-            SellerLocation.objects.update_or_create(
-                user=request.user,
-                defaults={"latitude": latitude, "longitude": longitude, "location":location}
-            )
-            return redirect('main:product-list') 
-    
-    return render(request, "main/seller_panel.html")
 
 
 def edit_profile(request):
     if request.method == "POST":
+        user = request.user
+
+        # Get form values
         full_name = request.POST.get("full_name")
         location = request.POST.get("location")
         latitude = request.POST.get("latitude")
@@ -157,112 +156,126 @@ def edit_profile(request):
         tiktok = request.POST.get("tiktok")
         business_name = request.POST.get('business_name')
         business_descriptions = request.POST.get('business_descriptions')
+        product_category = request.POST.get('product_category')
 
-        print(location)
-
-        user = request.user
+        # Update full name
         if full_name:
             CustomUser.objects.update_or_create(
                 email=user.email,
-                defaults={'full_name':full_name}
+                defaults={'full_name': full_name}
             )
+
+        # Update or create seller location
         if location:
             SellerLocation.objects.update_or_create(
                 user=user,
-                defaults={'location': location, 'latitude':latitude, 'longitude':longitude}
+                defaults={
+                    'location': location,
+                    'latitude': latitude,
+                    'longitude': longitude
+                }
             )
-        
-        if instagram:
-            SocialInfo.objects.update_or_create(
-                social_category='instagram',
-                defaults={'handle':instagram, 'social_category':'instagram'}
-            )
-        if facebook:
-            SocialInfo.objects.update_or_create(
-                social_category='facebook',
-                defaults={'handle':facebook, 'social_category':'facebook'}
-            )
-        if tiktok:
-            SocialInfo.objects.update_or_create(
-                social_category='tiktok',
-                defaults={'handle':tiktok, 'social_category':'tiktok'}
-            )
-        if business_name:
-            BusinessProfile.objects.update_or_create(
+
+        # Update or create BusinessProfile
+        business_profile, _ = BusinessProfile.objects.update_or_create(
+            user=user,
+            defaults={
+                'business_name': business_name if business_name else '',
+                'business_descriptions': business_descriptions if business_descriptions else '',
+                'product_category': product_category if product_category else 'Other'
+            }
+        )
+
+        # Get all user's products
+        user_products = ProductInfo.objects.filter(user=user)
+
+        # If no products exist, create a default one
+        if not user_products.exists():
+            default_product = ProductInfo.objects.create(
                 user=user,
-                defaults={'business_name':business_name}
+                business_profile=business_profile,
+                product_name="Default Product",
+                product_descriptions="Auto-created product for social links"
             )
-        if business_descriptions:
-            BusinessProfile.objects.update_or_create(
-                user=user,
-                defaults={'business_descriptions':business_descriptions}
-            )
-        
-        # user.save()
+            user_products = [default_product]
+
+        # Save or update social handles
+        socials = {
+            'Facebook': facebook,
+            'Instagram': instagram,
+            'Tiktok': tiktok,
+        }
+
+        for category, handle in socials.items():
+            if handle:
+                if not handle.startswith('@'):
+                    messages.error(request, f"{category} handle must start with '@'")
+                    continue
+
+                # Update or create social handle
+                social_obj, _ = SocialInfo.objects.update_or_create(
+                    user=user,
+                    social_category=category,
+                    defaults={'handle': handle}
+                )
+
+                # Associate with all user's products
+                social_obj.product_infos.set(user_products)
+
         messages.success(request, "Profile updated successfully!")
         return redirect("main:edit-profile")
-    
+
     return render(request, "main/seller_panel.html")
 
-def update_product_view(request):
-    return render(request, 'main/product_list.html')
-
-def product_list(request):
-    user = request.user
-    products = ProductInfo.objects.filter(user=user)
-    fashion = []
-    furniture = []
-    electronics = []
-    kitchenware = []
-    other = []
-    for product in products:
-        if product.product_category =='Fashion':
-            fashion.append(product)
-        elif product.product_category == 'Furniture':
-            furniture.append(product)
-        elif product.product_category == 'Electronics':
-            electronics.append(product)
-        elif product.product_category == 'Kitchenware':
-            kitchenware.append(product)
-        else:
-            other.append(product)
-    return render (request, 'main/product_list.html', {'products':products})
 
 def add_product(request):
     if request.method == 'POST':
         product_name = request.POST.get('name')
         product_descriptions = request.POST.get('description')
-        product_category = request.POST.get('category')
 
         user = request.user
 
-        ProductInfo.objects.create(
-            user=user,
-            product_name=product_name,
-            product_descriptions=product_descriptions,
-            product_category=product_category
-        )
+        # Step 1: Get the business profile of the current user
+        business_profile = BusinessProfile.objects.filter(user=user).first()
 
+        if business_profile:
+            # Step 2: Create the product
+            product = ProductInfo.objects.create(
+                user=user,
+                product_name=product_name,
+                product_descriptions=product_descriptions,
+                business_profile=business_profile
+            )
+
+            # Step 3: Get all social handles of the user
+            social_handles = SocialInfo.objects.filter(user=user)
+
+            # Step 4: Associate the product with each social handle (ManyToMany)
+            for social in social_handles:
+                social.product_infos.add(product)
+
+            messages.success(request, "Product added and associated with your social handles successfully!")
+        else:
+            messages.error(request, "You must first create a business profile before adding products.")
+
+        # Redirect back to seller panel
         url = reverse('main:seller-panel')
         return redirect(f'{url}#products')
 
     return render(request, 'main/seller_panel.html')
 
-
-# EDIT PAGE VIEWS
 def edit_product_info(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk, user=request.user)
-    # social = SocialInfo.objects.filter(product_infos=product).first()
+
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
-        # social_form = SocialInfoForm(request.POST, instance=social)
-        if form.is_valid(): #and social_form.is_valid():
+        if form.is_valid():
             form.save()
-            messages.success(request, 'Changes successful updated')
+            messages.success(request, 'Product details updated successfully.')
             return redirect('main:edit-product', product.pk)
     else:
         form = ProductForm(instance=product)
-        # social_form = SocialInfoForm(instance=social)
+
     return render(request, 'main/edit_product_info.html', {'form': form, 'product': product})
 
 

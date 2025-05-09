@@ -24,97 +24,59 @@
 }
 
 /* LOGIN */
-/* Container styling */
 .login-container {
-    position: relative;
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.login-header {
     text-align: center;
-    background: linear-gradient(to bottom, #2c3e50, #ffffff);
-    padding: 40px;
-    /* border-radius: 15px; */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
-
-/* Social media cloud icons */
-.cloud-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
+.login-header h1 {
+    color: #4a6bdf;
 }
-
-.cloud-icons i {
-    font-size: 30px;
-    color: #ffffff;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.login-form .form-group {
+    margin-bottom: 1.5rem;
 }
-
-/* Login form box */
-.log-in-div {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: auto;
+.login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
-
-/* Input field styling */
-.input-field {
-    margin-bottom: 15px;
-    position: relative;
-    text-align: left;
-}
-
-.input-field label {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-}
-
-.input-field i {
-    margin-right: 8px;
-    color: #3498db;
-}
-
-.input-field input {
+.login-form input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
 }
-
-/* Button styling */
-.login-button {
-    background-color: #3498db;
-    color: white;
-    padding: 10px;
+.login-form .btn {
     width: 100%;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background 0.3s ease-in-out;
+    padding: 0.75rem;
+    font-size: 1rem;
 }
-
-.login-button:hover {
-    background-color: #2980b9;
+.login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
 }
-
-/* Error message styling */
+.login-footer a {
+    color: #4a6bdf;
+    text-decoration: none;
+}
+.login-footer a:hover {
+    text-decoration: underline;
+}
 .error-message {
-    color: red;
-    background: rgba(255, 0, 0, 0.1);
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 14px;
+    color: #e53e3e;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
 }
+
 .message-success {
     width: 100%;
     margin-bottom: 5px;
@@ -554,13 +516,6 @@ nav a:hover {
 }
 
 /* NEW SELLER CARD STYLE */
-/* .container {
-    background-color: #f2f2f2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-} */
 .search-result-descriptions {
     display: flex;
     gap: 2rem;
@@ -1086,16 +1041,33 @@ footer {
 }
 
 .completion-bar {
-    height: 6px;
-    background-color: var(--border-color);
-    border-radius: 3px;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
     margin-bottom: 0.5rem;
 }
 
 .completion-fill {
     height: 100%;
-    border-radius: 3px;
-    background-color: var(--primary-color);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+/* Color based on percentage */
+.fill-50 {
+    width: 50%;
+    background-color: #e74c3c; /* red */
+}
+
+.fill-80 {
+    width: 80%;
+    background-color: #f39c12; /* orange */
+}
+
+.fill-100 {
+    width: 100%;
+    background-color: #27ae60; /* green */
 }
 
 .dashboard-nav ul {

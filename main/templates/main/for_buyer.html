@@ -32,12 +32,17 @@
                 </div>
 
                 <div class="tags">
-                    <span class="tag">{{ seller.product_info.business_profile.product_category }}</span>
+                    {% if seller.product_info.business_profile %}
+                        <span class="tag">{{ seller.product_info.business_profile.product_category }}</span>
+                    {% else %}
+                        <span class="tag">Uncategorized</span>
+                    {% endif %}
+
                 </div>
 
                 <div class="location">
                     <i class="fas fa-location-dot"></i>
-                    <span>{{ seller.distance }} km away . Dar es salaam</span>
+                    <span>{{ seller.distance }} km away . {{ seller.user.sellerlocation.first.location }}</span>
                 </div>
 
                 <button class="copy-btn" onclick="copyText('textToCopy-{{ forloop.counter }}'); getHandleId('{{ seller.user.id }}')">

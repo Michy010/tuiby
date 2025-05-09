@@ -2,48 +2,36 @@
 {% load static %}
 {% block title %} LogIn {% endblock %}
 {% block content %}
-<div class="login-container">
-    <div class="cloud-icons">
-        <i class="fab fa-tiktok"></i>
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-instagram"></i>
-    </div>
-    <div class="log-in-div">
-        <form action="{% url 'accounts:login' %}" method="post">
+<main class="container">
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Seller Login</h1>
+            <p>Access your seller dashboard to manage your profile and products</p>
+        </div>
+        <form method="post" action="{% url 'accounts:login' %}" class="login-form">
             {% csrf_token %}
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </div>
             {% if error %}
-            <div class="error-message">
-                <p>{{error}}</p>
+            <div id="formError" class="error-message">
+                {{error}}
             </div>
             {% endif %}
-            <div class="input-field">
-                <label for="username"><i class="fas fa-user"></i> Email</label>
-                <input type="email" id="username" name="email" placeholder="Enter Your Email Eg. someone@gmail.com" required>
-            </div>
-            <div class="input-field">
-                <label for="password"><i class="fas fa-lock"></i> Password</label>
-                <div style="position: relative;">
-                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
-                    <i class="fas fa-eye-slash toggle-password" toggle="#password"
-                       style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
-                </div>
-            </div>            
-            <button type="submit" class="login-button">Login</button>
         </form>
+        <div class="login-footer">
+            <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register as a seller</a></p>
+            <p><a href="forgot-password.html">Forgot your password?</a></p>
+        </div>
     </div>
-    <div style="margin-top: 5px;"><a href="{% url 'accounts:register' %}">Don't have an account? SignUp</a></div>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggle = document.querySelector('.toggle-password');
-        const input = document.querySelector(toggle.getAttribute('toggle'));
-
-        toggle.addEventListener('click', function () {
-            const isPassword = input.getAttribute('type') === 'password';
-            input.setAttribute('type', isPassword ? 'text' : 'password');
-            toggle.classList.toggle('fa-eye');
-            toggle.classList.toggle('fa-eye-slash');
-        });
-    });
-</script>
+</main>
 {% endblock %}
