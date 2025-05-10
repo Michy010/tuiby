@@ -10,40 +10,41 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+"""
+Django settings for tuiby project.
+"""
+
 from pathlib import Path
 import os
 import environ
 import dj_database_url
 from django.core.management.utils import get_random_secret_key
 
-env = environ.Env()
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Initialize environment
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / '.env')  # Local use only
 
-
-
-environ.Env.read_env(BASE_DIR / '.env')  # <-- Updated!
-
-
-...
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY', default=get_random_secret_key())  # <-- Updated!
-DEBUG = env.bool('DEBUG', default=True)
-
-
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
+# SECURITY SETTINGS
+SECRET_KEY = env('SECRET_KEY', default=get_random_secret_key())
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'tuiby.fly.dev']
 CSRF_TRUSTED_ORIGINS = ['https://tuiby.fly.dev']
 
-# Application definition
+# MEDIA FILES
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# STATIC FILES
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# APPLICATIONS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,7 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    # Installed Apps
+    # apps
     'main',
     'accounts',
 ]
@@ -88,24 +89,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tuiby.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+import dj_database_url
+import os
 
 DATABASES = {
-    'default': dj_database_url.parse(env('DATABASE_URL', default='sqlite:///db.sqlite3')),
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -121,33 +117,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
+# TIMEZONE AND LANGUAGE
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# CUSTOM USER MODEL AND AUTH BACKEND
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+
+# DEFAULT PRIMARY KEY FIELD TYPE
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
