@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Document</title>
+    <title>Tuiby|Seller Panel</title>
 </head>
     <body class="seller-dashboard">
         <!-- Seller Header -->
@@ -89,7 +89,7 @@
 <main class="dashboard-main">
     <!-- Profile Section -->
     {% if messages %}
-        {% for message in messages %}
+        {% for message in messages%}
         <div class="message-success">{{message}}</div>
         {% endfor %}
     {% endif %}
@@ -103,7 +103,7 @@
                 <input type="text" id="sellerName" name="full_name" value="{{user.full_name}}">
             </div>
             <div class="form-group">
-                <label for="businessName">Business Name (Optional)</label>
+                <label for="businessName">Business Name</label>
                 <input type="text" id="businessName" name="business_name"
                 value="{% if products %}{{ products.0.business_profile.business_name }}{% endif %}"
                 placeholder="Add your business name eg M6outfits shop">
@@ -138,10 +138,6 @@
             </textarea>
         </div>        
 
-        <div class="form-row">
-            
-        </div>
-
         <h2>Social Media Handles</h2>
         <div class="social-handles">
             <div class="handle-input">
@@ -152,7 +148,6 @@
                 <input class="social-input" id="instagram" name="instagram" type="text"
                     value="{% for social in social %}{% if social.social_category == 'Instagram' %} {{ social.handle }} {% endif %}{% endfor %}"
                     placeholder="handle name eg @janes_crafts" maxlength="100">
-
             </div>
             
             <div class="handle-input">

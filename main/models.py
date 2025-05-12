@@ -41,7 +41,7 @@ class SocialInfo(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     social_category = models.CharField(max_length=50, choices=SOCIAL_CATEGORIES, default='Instagram')
-    handle = models.CharField(max_length=100, validators=[validate_handle_input])
+    handle = models.CharField(max_length=100)
     product_infos = models.ManyToManyField(ProductInfo, related_name='social_handles', blank=True)
 
     def __str__(self):

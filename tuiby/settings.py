@@ -74,7 +74,7 @@ ROOT_URLCONF = 'tuiby.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "accounts/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,13 +92,7 @@ WSGI_APPLICATION = 'tuiby.wsgi.application'
 import dj_database_url
 import os
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL'),
-#         conn_max_age=600,
-#         ssl_require=True
-#     )
-# }
+
 DATABASES = {
     'default': dj_database_url.parse(env('DATABASE_URL', default='sqlite:///db.sqlite3'))
 }
@@ -132,3 +126,11 @@ AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
 # DEFAULT PRIMARY KEY FIELD TYPE
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

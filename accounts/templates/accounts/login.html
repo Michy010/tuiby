@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %} LogIn {% endblock %}
 {% block content %}
+<!-- Include Font Awesome CDN -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
+
 <main class="container">
     <div class="login-container">
         <div class="login-header">
@@ -14,14 +17,21 @@
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" required>
             </div>
+            
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+                <div style="margin-top: 0.5rem; display: flex; align-items: center; white-space: nowrap;">
+                    <label for="showPassword" style="margin: 0;">Show Password</label>
+                    <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()" style="margin-right: 8px;">
+                </div>
                 <div id="passwordError" class="error-message"></div>
-            </div>
+            </div>            
+            
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Log In</button>
             </div>
+
             {% if error %}
             <div id="formError" class="error-message">
                 {{error}}
@@ -30,8 +40,16 @@
         </form>
         <div class="login-footer">
             <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register as a seller</a></p>
-            <p><a href="forgot-password.html">Forgot your password?</a></p>
+            <p><a href="{% url 'accounts:password_reset' %}">Forgot your password?</a></p>
         </div>
     </div>
 </main>
+
+<!-- Toggle script -->
+<script>
+    document.getElementById("showPassword").addEventListener("change", function () {
+        const passwordField = document.getElementById("password");
+        passwordField.type = this.checked ? "text" : "password";
+    });
+</script>
 {% endblock %}

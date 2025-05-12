@@ -54,9 +54,20 @@ def filter_sellers(request):
 
                 # Filter products by query
                 if query:
+                    # linked_products = linked_products.filter(
+                    #     Q(product_name__icontains=query) |
+                    #     Q(product_descriptions__icontains=query)
+                    # )
+                    query_plural = query + 's'
+                    query_singular = query.rstrip('s')
+
                     linked_products = linked_products.filter(
                         Q(product_name__icontains=query) |
-                        Q(product_descriptions__icontains=query)
+                        Q(product_name__icontains=query_plural) |
+                        Q(product_name__icontains=query_singular) |
+                        Q(product_descriptions__icontains=query) |
+                        Q(product_descriptions__icontains=query_plural) |
+                        Q(product_descriptions__icontains=query_singular)
                     )
 
                 for product in linked_products:
@@ -209,8 +220,7 @@ def edit_profile(request):
         for category, handle in socials.items():
             if handle:
                 if not handle.startswith('@'):
-                    messages.error(request, f"{category} handle must start with '@'")
-                    continue
+                    handle = '@'+handle
 
                 # Update or create social handle
                 social_obj, _ = SocialInfo.objects.update_or_create(
@@ -222,7 +232,7 @@ def edit_profile(request):
                 # Associate with all user's products
                 social_obj.product_infos.set(user_products)
 
-        messages.success(request, "Profile updated successfully!")
+        profile_message = messages.success(request, "Profile updated successfully!")
         return redirect("main:edit-profile")
 
     return render(request, "main/seller_panel.html")
@@ -235,11 +245,11 @@ def add_product(request):
 
         user = request.user
 
-        # Step 1: Get the business profile of the current user
+        # Get the business profile of the current user
         business_profile = BusinessProfile.objects.filter(user=user).first()
 
         if business_profile:
-            # Step 2: Create the product
+            # Creating the product
             product = ProductInfo.objects.create(
                 user=user,
                 product_name=product_name,
@@ -247,10 +257,10 @@ def add_product(request):
                 business_profile=business_profile
             )
 
-            # Step 3: Get all social handles of the user
+            # Get all social handles of the user
             social_handles = SocialInfo.objects.filter(user=user)
 
-            # Step 4: Associate the product with each social handle (ManyToMany)
+            # Associate the product with each social handle (ManyToMany)
             for social in social_handles:
                 social.product_infos.add(product)
 

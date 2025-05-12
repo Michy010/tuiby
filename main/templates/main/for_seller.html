@@ -1,6 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
-{% block title %} Seller Dashboard {% endblock %}
+{% block title %} For seller {% endblock %}
 {% block content %}
 <!-- Seller Hero -->
 <section class="seller-hero">
@@ -72,31 +72,23 @@
                     {% endif %}
                     <div class="form-group">
                         <label for="id_password1">Password</label>
-                        <input type="password" placeholder="Enter your password Eg. Abcd@123" name="password" required>
+                        <input type="password" id="password1" placeholder="Enter your password Eg. Abcd@123" name="password" required>
                     </div>
+                    
+                    <!-- Keep checkbox and label in one line -->
+                    <div style="display: flex; align-items: center; margin-top: 0.5rem; white-space: nowrap;">
+                        <input type="checkbox" id="showPassword1" style="margin-right: 8px;">
+                        <label for="showPassword1" style="margin: 0;">Show Password</label>
+                    </div>
+                    
                     {% if register_form.password1.errors %}
-                           <ul>
-                               {% for error in register_form.password1.errors %}
-                                   <li style="color: red;">{{ error }}</li>
-                               {% endfor %}
-                           </ul>
+                        <ul>
+                            {% for error in register_form.password1.errors %}
+                                <li style="color: red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
                     {% endif %}
-
-                    <!-- <div class="form-group">
-                        <label for="id_password2">Confirm Password</label>
-                        {{ register_form.password2}}
-                    </div> -->
-                    {% if register_form.password2.errors %}
-                           <ul>
-                               {% for error in register_form.password2.errors %}
-                                   <li style="color: red;">{{ error }}</li>
-                               {% endfor %}
-                           </ul>
-                    {% endif %}
-                    <!-- <div class="form-group">
-                        <label for="sellerLocation">Location</label>
-                        <input type="text" id="sellerLocation" required>
-                    </div> -->
+                    
                     <button type="submit" class="btn btn-primary">Register Now</button>
                     <p class="login-link">Already have an account? <a href="{% url 'accounts:login' %}">Log
                             in here</a></p>
@@ -104,6 +96,13 @@
             </div>
         </div>
     </div>
+    <!-- Toggle script -->
+    <script>
+        document.getElementById("showPassword1").addEventListener("change", function () {
+            const passwordField = document.getElementById("password1");
+            passwordField.type = this.checked ? "text" : "password";
+        });
+    </script>
 </section>
 
 {% endblock %}
