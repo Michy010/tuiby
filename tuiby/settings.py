@@ -29,7 +29,7 @@ environ.Env.read_env(BASE_DIR / '.env')  # Local use only
 SECRET_KEY = env('SECRET_KEY', default=get_random_secret_key())
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'tuiby.fly.dev']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.tuiby.com']
 CSRF_TRUSTED_ORIGINS = ['https://tuiby.fly.dev']
 
 # MEDIA FILES
