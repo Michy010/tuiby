@@ -1300,6 +1300,9 @@ footer {
 .stat-change.neutral {
     color: #6b7280; /* Gray */
 }
+.stat-change.negative {
+    color: red;
+}
 
 .stats-chart {
     width: 50%;

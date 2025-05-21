@@ -27,10 +27,10 @@ environ.Env.read_env(BASE_DIR / '.env')  # Local use only
 
 # SECURITY SETTINGS
 SECRET_KEY = env('SECRET_KEY', default=get_random_secret_key())
-DEBUG = env.bool('DEBUG', default=True)
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.tuiby.com']
-CSRF_TRUSTED_ORIGINS = ['https://www.tuiby.com']
+CSRF_TRUSTED_ORIGINS = ['https://tuiby.fly.dev', 'https://www.tuiby.com']
 
 # MEDIA FILES
 MEDIA_URL = '/media/'
